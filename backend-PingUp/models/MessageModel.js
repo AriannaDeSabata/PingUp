@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
 const messageSchema = new mongoose.Schema({
-    ping:{
+    chat:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Pings',
+        ref: 'Chat',
         required: true
     },
     sender: {
@@ -19,6 +19,6 @@ const messageSchema = new mongoose.Schema({
     timestamps: true
 })
 
-const messageModel = mongoose.model("Messagges", messageSchema)
+const messageModel = mongoose.model("Message", messageSchema)
 
 export default messageModel

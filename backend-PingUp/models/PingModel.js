@@ -31,12 +31,17 @@ const pingSchema = new mongoose.Schema({
     },
     participants: [
         {
-            user: {
+              user: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "Users"
-            }
+            },
+            _id : false
         }
     ],
+    chat: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Chat"
+    }
 
 },
 {

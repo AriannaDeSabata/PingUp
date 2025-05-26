@@ -3,6 +3,9 @@ import userModel from '../models/UserModel.js'
 import generateToken from '../service/generateToken.js'
 import bcrypt from 'bcrypt'
 import authMiddleware from '../middlewares/authMiddleware.js'
+import pingModel from '../models/PingModel.js'
+import chatModel from '../models/ChatModel.js'
+import messageModel from '../models/MessageModel.js'
 
 const route = express.Router()
 
@@ -25,7 +28,7 @@ route.post('/login', async(req ,res ,next)=>{
                 })
 
                 res.status(200).json({
-                    message: "Login avvenuto con successo",
+                    message: "Login successful",
                     token
                 })
 
@@ -50,7 +53,7 @@ route.post('/register', async(req, res, next)=>{
         
         const existUser = await userModel.findOne({email})
         if(existUser){
-            return res.status(400).json({message : "Esiste ià un'account con questa email"})
+            return res.status(400).json({message : "An account with this email already exists"})
         }
 
         const newUser = new userModel(req.body)
@@ -65,7 +68,7 @@ route.post('/register', async(req, res, next)=>{
         })
 
         res.status(200).json({
-            message: "Registrazione avvenuta con successo", 
+            message: "Registration successfull!", 
             token
         })
 
@@ -80,8 +83,9 @@ route.post('/register', async(req, res, next)=>{
 //rotta per recuperare l'utente loggato
 route.get('/me', authMiddleware , async(req ,res ,next)=>{
     try {
-    
-        res.status(200).json(req.user)
+    const userObject = req.user.toObject()
+    const { password, ...safeUser } = userObject
+    res.status(200).json(safeUser)
 
     } catch (error) {
         next(error)
@@ -97,7 +101,7 @@ route.put('/me', authMiddleware, async(req ,res ,next)=>{
         const userUpdate = await userModel.findByIdAndUpdate(id, obj, {new: true})
 
         res.status(200).json({
-            message: "Utente aggiornato",
+            message: "Updated user",
             userUpdate
         })
 
@@ -111,9 +115,16 @@ route.delete('/me', authMiddleware, async(req ,res ,next)=>{
     try {
         
         const id = req.user.id
-        const userDelete = await userModel.findByIdAndDelete(id)
+        const user = await userModel.findById(id)
 
-        res.status(200).json({message: "Utente cancellato con successo"})
+        if(user._id.toString() !== id){
+            return res.status(404).json({message: "Unauthorized"})
+        }
+        
+
+        await userModel.findByIdAndDelete(id)
+
+        res.status(200).json({message: "User successfully deleted"})
 
     } catch (error) {
         next(error)

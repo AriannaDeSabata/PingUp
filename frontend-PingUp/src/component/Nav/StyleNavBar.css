@@ -1,0 +1,30 @@
+.offcanvas.offcanvas-end  {
+    width: 250px ; 
+}
+
+.brand{
+    font-size: 1.5em;
+}
+
+.avatar{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: solid 1px black;
+
+}
+
+
+.linkNav{
+    text-decoration: none;
+    color: #000;
+
+}
+
+.logOut{
+    border: none;
+    background-color: transparent;
+    text-align: start;
+    padding: 0;
+    color: rgb(226, 13, 13);
+}
