@@ -46,7 +46,6 @@ export default function RegisterPage() {
         if(response.status === 201 || response.status === 200){
           localStorage.setItem("token", response.data.token)
           navigate('/home')
-          
         }
 
 

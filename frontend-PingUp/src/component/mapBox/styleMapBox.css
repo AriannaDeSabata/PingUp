@@ -1,0 +1,68 @@
+.mapContainer{
+    width: 100%;
+    height: 600px;
+
+}
+
+@media (max-width: 768px){
+    .mapContainer{
+        height: 500px;
+    }
+}
+
+@media (max-width: 480px){
+    .mapContainer{
+        height: 650px;
+    }
+}
+
+.addPing{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    border-radius: 50%;
+    border: none;
+    background-color: brown;
+    width: 50px;
+    height: 50px;
+    font-size: 2em;
+    color: #fff;
+}
+
+.form{
+    width: 350px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    position: absolute;
+    top:100px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 30px;
+
+}
+
+.closeForm{
+    font-size: 0.8em;
+    border: none;
+    background-color: transparent;
+    float: right;
+}
+.formGroup{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.formGroup label{
+    margin-bottom: 0;
+}
+
+.list{
+    position: absolute;
+    z-Index: 1000;
+    width: 85%;
+    max-height: 130px;
+    overflow-y: auto;
+    cursor: pointer;
+}
+

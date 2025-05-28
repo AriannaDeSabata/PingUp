@@ -12,7 +12,10 @@ const pingSchema = new mongoose.Schema({
         required: true
     },
     location:{
-        type: { type: String, default: 'Point' }, 
+        type: { 
+            type: String, 
+            default: 'Point' }, 
+            
         coordinates: {
             type: [Number], 
             required: true

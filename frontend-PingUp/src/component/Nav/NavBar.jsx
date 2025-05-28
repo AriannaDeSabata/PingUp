@@ -19,8 +19,8 @@ export default function NavBar() {
     <Navbar expand="md" className="bg-body-tertiary mb-3 ">
     <Container fluid={"md"} >
 
-      <Link to={'/profile'}><img src='https://img.freepik.com/vettori-premium/personaggio-avatar-isolato_729149-194801.jpg?semt=ais_hybrid&w=740' alt='avatar'className='avatar'/></Link>
-
+     {/* <Link to={'/profile'}><img src='https://img.freepik.com/vettori-premium/personaggio-avatar-isolato_729149-194801.jpg?semt=ais_hybrid&w=740' alt='avatar'className='avatar'/></Link>
+*/}
         <Navbar.Brand href="/" className='brand'>PingUp</Navbar.Brand>
         <Navbar.Toggle aria-controls="offcanvasNavbar" />
         <Navbar.Offcanvas

@@ -25,7 +25,7 @@ route.post('/', authMiddleware, async(req, res, next)=>{
 
         const saveNewPing = await newPing.save()
 
-        res.status(200).json(saveNewPing)
+        res.status(200).json(newPing)
 
     } catch (error) {
         next(error)
