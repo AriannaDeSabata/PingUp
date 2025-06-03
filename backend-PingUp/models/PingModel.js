@@ -11,6 +11,9 @@ const pingSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
+    city:{
+        type: String,
+    },
     location:{
         type: { 
             type: String, 

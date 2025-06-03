@@ -35,7 +35,14 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Pings'
         }
+    ],
+    pingsCreated : [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Pings'
+        }
     ]
+
 },
 {
     timestamps: true

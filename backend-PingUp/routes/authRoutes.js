@@ -83,14 +83,29 @@ route.post('/register', async(req, res, next)=>{
 //rotta per recuperare l'utente loggato
 route.get('/me', authMiddleware , async(req ,res ,next)=>{
     try {
-    const userObject = req.user.toObject()
-    const { password, ...safeUser } = userObject
-    res.status(200).json(safeUser)
 
-    } catch (error) {
-        next(error)
-    }
-} )
+        const user = await userModel.findById(req.user._id)
+        .populate({
+            path: "pingsJoined",
+            select: ["category", "date", "icon", "description", "chat", "city"]
+        })
+        .populate({
+            path: "pingsCreated",
+            select: ["category", "date", "icon", "location", "description", "chat", "city"]
+        })
+        
+        if(!user){
+            return res.status(400).json({message: "user Not Found"})
+        }
+
+
+        const { password, ...safeUser } = user.toObject()
+        res.status(200).json(safeUser)
+
+        } catch (error) {
+            next(error)
+        }
+    } )
 
 //rotta per modificare l'utente tramite id
 route.put('/me', authMiddleware, async(req ,res ,next)=>{

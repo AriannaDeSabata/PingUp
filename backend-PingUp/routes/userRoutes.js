@@ -22,6 +22,14 @@ route.get('/:id', async(req , res, next)=>{
     try {
         const id = req.params.id
         const user = await userModel.findById(id)
+        .populate({
+            path: "pingsJoined",
+            select: ["category", "date", "icon", "location", "description", "chat", "city"]
+        })
+        .populate({
+            path: "pingsCreated",
+            select: ["category", "date", "icon", "location", "description", "chat", "city"]
+        })
         res.status(200).json(user)
 
     } catch (error) {

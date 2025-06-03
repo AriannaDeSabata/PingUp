@@ -2,6 +2,7 @@ import express from 'express'
 import pingModel from '../models/PingModel.js'
 import authMiddleware from '../middlewares/authMiddleware.js'
 import chatModel from '../models/ChatModel.js'
+import userModel from '../models/UserModel.js'
 
 const route = express.Router()
 
@@ -24,6 +25,12 @@ route.post('/', authMiddleware, async(req, res, next)=>{
         newPing.chat = newChat._id
 
         const saveNewPing = await newPing.save()
+
+        const userUpdate = await userModel.findByIdAndUpdate(
+            idUser,
+            { $addToSet: { pingsCreated: newPing._id } },
+            { new: true }
+            )
 
         res.status(200).json(newPing)
 
@@ -80,16 +87,16 @@ route.delete('/:id', authMiddleware, async(req, res, next)=>{
         const ping = await pingModel.findById(id)
 
         if(!ping){
-            return res.status(404).json({message: "Ping non trovato"})
+            return res.status(404).json({message: "Ping not found"})
         }
 
         if(ping.creatorId.toString() !== idUser){
-            return res.status(401).json({message: "Non autorizzato"})
+            return res.status(401).json({message: "Unauthorized"})
         }
 
         await pingModel.findByIdAndDelete(id)
 
-        res.status(200).json({message: "Ping eliminato con successo"})
+        res.status(200).json({message: "Ping deleted successfully"})
 
     } catch (error) {
         next(error)
@@ -105,22 +112,24 @@ route.put('/join/:id', authMiddleware, async(req , res, next)=>{
 
         const ping = await pingModel.findById(idPing)
         if(!ping){
-            return res.status(404).json({message: "Ping non trovato"})
+            return res.status(404).json({message: "Ping not found"})
         }
         
         if(ping.creatorId.toString() === idUser){
-            return res.status(400).json({message: "Sei già nella chat come creatore"})
+            return res.status(400).json({message: "You are already in the chat"})
         }
 
         const alreadyInPing = ping.participants.some(p => p.user.toString() === idUser)
         if(!alreadyInPing){
             ping.participants.push({user: idUser})
             await ping.save()
+        }else if(alreadyInPing){
+            return res.status(400).json({message: "You are already a participant"})
         }
 
         const chat = await chatModel.findOne({ping: idPing})
         if(!chat){
-            return res.status(404).json({message: "Chat associata non trovata "})
+            return res.status(404).json({message: "Associated chat not found "})
         }
 
         const alreadyInChat = chat.participants.some(p=> p.toString()=== idUser)
@@ -129,7 +138,13 @@ route.put('/join/:id', authMiddleware, async(req , res, next)=>{
             await chat.save()
         }
 
-        res.status(200).json({message: "Partecipante aggiunto", ping})
+            const updatedUser = await userModel.findByIdAndUpdate(
+            idUser,
+            { $addToSet: { pingsJoined: idPing } },
+            { new: true }
+            )
+
+        res.status(200).json({message: "You have been added", ping})
 
     } catch (error) {
         next(error)
@@ -145,12 +160,12 @@ route.put('/leave/:id', authMiddleware, async(req, res, next)=>{
         const ping = await pingModel.findById(idPing)
 
         if(!ping){
-            return res.status(400).json({message: "Ping non trovato"})
+            return res.status(400).json({message: "Ping not found"})
         }
         ping.participants.pull({user:idUser})
         await ping.save()
 
-        res.status(200).json({messagge: "Il partecipante ha lasciato il ping"})
+        res.status(200).json({messagge: "You left the event"})
 
     } catch (error) {
         next(error)

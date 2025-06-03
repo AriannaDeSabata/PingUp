@@ -3,30 +3,45 @@
     height: 600px;
 
 }
+.mapboxgl-canvas {
+  width: 100%;
+  height: 100%;
+}
 
 @media (max-width: 768px){
     .mapContainer{
-        height: 500px;
+        height: 550px;
     }
 }
 
-@media (max-width: 480px){
+@media (max-width: 430px){
     .mapContainer{
-        height: 650px;
+        height: 600px;
     }
 }
+.listPings{
+    height: 500px;
+    background-color: #aaaaaa;
+}
 
-.addPing{
+
+.buttonMap {
     position: absolute;
-    top: 20px;
     right: 20px;
     border-radius: 50%;
     border: none;
-    background-color: brown;
+    background-color: rgb(12, 142, 175);
     width: 50px;
     height: 50px;
     font-size: 2em;
     color: #fff;
+    font-size: 20px;
+}
+.addPing{
+    top: 50px;
+}
+.searchBtn{
+    top: 110px;
 }
 
 .form{
@@ -34,10 +49,11 @@
     background-color: #ffffff;
     border-radius: 10px;
     position: absolute;
-    top:100px;
+    top:170px;
     left: 50%;
     transform: translateX(-50%);
     padding: 30px;
+
 
 }
 
@@ -64,5 +80,25 @@
     max-height: 130px;
     overflow-y: auto;
     cursor: pointer;
+}
+
+.iconMarker{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #08be0881;
+
+}
+
+.iconEl{
+    font-size: 24px;
+    color: rgb(0, 0, 0);
+
+}
+
+.imgUser{
+    width: 30px;
+    height: 30px;
 }
 

@@ -3,20 +3,24 @@ import { Button, Form, ListGroup } from 'react-bootstrap'
 import categories from './categories'
 import { SearchBox } from "@mapbox/search-js-react"
 import api from '../../../service/api.js'
+import Select from 'react-select'
 
-export default function AddPingFormComponents({setShowFormPing}) {
+export default function AddPingFormComponents({setShowFormPing,setPings, pings }) {
 
   const [value, setValue] = React.useState('')
-  const [search, setSearch] = useState('')
-  const [showList, setShowList] = useState(false)
-  const filterCategory = categories.filter(cat =>
-    cat.toLowerCase().startsWith(search.toLowerCase())
-  )
+  const [categorySelected, setCategorySelected] = useState(null) 
+  const options = categories.map(cat=>({value: cat, label: cat}))   
+  
+  const handleChangeCategory =(e)=>{
+        setCategorySelected(e.value)
+    }
+
 
   const [ping, setPing]= useState({
     category: '',
     date: '',
     description: '',
+    city: '',
     location: {
       coordinates:[]
     }
@@ -28,7 +32,8 @@ export default function AddPingFormComponents({setShowFormPing}) {
   const handleChange = (e) => {
     setPing({
       ...ping,
-      [e.target.name] : e.target.value
+      [e.target.name] : e.target.value,
+      category : categorySelected
     })
   }
 
@@ -38,13 +43,16 @@ export default function AddPingFormComponents({setShowFormPing}) {
       category: ping.category,
       date: ping.date,
       description: ping.description,
+      city: ping.city,
       location: ping.location
     }
 
     try {
       const res = await api.post('/ping', newPing)
       if(res.status === 200 || res.status === 201){
-        console.log(res)
+        setShowFormPing(false)
+        console.log("ping aggiunto con successo")
+        setPings([...pings, res.data])
       }
 
     } catch (error) {
@@ -55,6 +63,7 @@ export default function AddPingFormComponents({setShowFormPing}) {
   const handleSubmit= (e)=>{
     e.preventDefault()
     postPing()
+
   }
 
   const handleLocation = (res)=>{
@@ -63,9 +72,11 @@ export default function AddPingFormComponents({setShowFormPing}) {
     const coord = loc.geometry.coordinates
     const lat = coord[0]
     const lng =coord[1]
+    const nameLoc = res.features[0].properties.name
 
     setPing({
       ...ping,
+      city: nameLoc,
       location: {
         coordinates : [lng, lat]
       }
@@ -81,42 +92,12 @@ export default function AddPingFormComponents({setShowFormPing}) {
           <h6>Add new Ping</h6>
         </div>
         <Form.Group>
-          <Form.Control
-            type="text"
-            placeholder='Category'
-            name="category"
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value)
-              setShowList(true)
-              handleChange(e)
-            }}
-            onFocus={() => setShowList(true)}
-            onBlur={() =>
-              setTimeout(() => setShowList(false), 150) // timeout per lasciare cliccare sulla lista
-            }
-
+          <Select
+            options={options}
+            placeholder="Select a category"
+            menuPlacement="auto"
+            onChange={handleChangeCategory}
           />
-          {showList && filterCategory.length > 0 && (
-            <ListGroup className='list'>
-              {filterCategory.map((cat) => (
-                <ListGroup.Item
-                  key={cat}
-                  action
-                  onMouseDown={() => {
-                    setSearch(cat)
-                    setShowList(false)
-                    setPing({
-                      ...ping,
-                      category: cat
-                    })
-                  }}
-                >
-                  {cat}
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          )}
         </Form.Group>
 
         <Form.Group>

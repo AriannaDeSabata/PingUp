@@ -1,0 +1,41 @@
+.colProfile{
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.colProfile p{
+    margin: 0;
+}
+
+.avatarProfile{
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+}
+
+@media (max-width:430px) {
+    .avatarProfile{
+        width: 100px;
+        height: 100px;
+    }
+    
+}
+
+
+.contInfo{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.contPingsCreated{
+
+
+}
+
+.contPingsJoin{
+
+
+}

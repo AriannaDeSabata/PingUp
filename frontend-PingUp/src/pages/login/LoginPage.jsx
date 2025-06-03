@@ -22,8 +22,9 @@ export default function LoginPage() {
     e.preventDefault()
     
     try {
-        const response = await api.post('/auth/login', loginUser)
-        localStorage.setItem("token", response.data.token)
+        const res = await api.post('/auth/login', loginUser)
+        const token = res.data.token
+        localStorage.setItem("token", token)
         navigate('/home')
 
     } catch (error) {
@@ -31,6 +32,8 @@ export default function LoginPage() {
     }
 
   }
+
+
 
   return (
     <Container fluid="sm" className='my-4 py-5'>

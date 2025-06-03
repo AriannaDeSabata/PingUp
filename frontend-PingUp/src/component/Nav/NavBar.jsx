@@ -1,26 +1,32 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Container, Nav, Navbar, Offcanvas } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import './StyleNavBar.css'
 
-export default function NavBar() {
 
-  const navigate = useNavigate()
+export default function NavBar({user, setUser}) {
 
+    const navigate = useNavigate()
+    const token = localStorage.getItem("token")
     const handleLogout = ()=>{
-      const token = localStorage.getItem("token")
+
       if(token){
         localStorage.removeItem("token")
+        localStorage.removeItem('user')
+        setUser(null)
         navigate('/')
       }
     }
 
   return (
-    <Navbar expand="md" className="bg-body-tertiary mb-3 ">
-    <Container fluid={"md"} >
+    <Navbar expand="md" className="bg-body-tertiary mb-3">
+    <Container >
 
-     {/* <Link to={'/profile'}><img src='https://img.freepik.com/vettori-premium/personaggio-avatar-isolato_729149-194801.jpg?semt=ais_hybrid&w=740' alt='avatar'className='avatar'/></Link>
-*/}
+      {user &&(
+          <Link to={'/profile'}><img src={user.avatar} alt='avatar'className='avatar me-3'/></Link>
+      )}
+
+
         <Navbar.Brand href="/" className='brand'>PingUp</Navbar.Brand>
         <Navbar.Toggle aria-controls="offcanvasNavbar" />
         <Navbar.Offcanvas

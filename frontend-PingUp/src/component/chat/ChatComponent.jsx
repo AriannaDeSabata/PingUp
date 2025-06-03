@@ -1,6 +1,6 @@
 
 import { useParams } from "react-router-dom"
-import socket from "../../socket-client"
+import socket from "../../../socket-client"
 import { useEffect, useState } from "react"
 
 export default function ChatComponent({user}) {
