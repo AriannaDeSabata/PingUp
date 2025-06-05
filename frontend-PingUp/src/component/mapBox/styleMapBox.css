@@ -102,3 +102,8 @@
     height: 30px;
 }
 
+.alertFormAdd{
+    font-size: 1em;
+    text-align: center;
+    color: red;
+}

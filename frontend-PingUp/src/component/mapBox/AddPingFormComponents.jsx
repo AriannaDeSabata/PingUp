@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Form, ListGroup } from 'react-bootstrap'
+import { Alert, Button, Form, ListGroup } from 'react-bootstrap'
 import categories from './categories'
 import { SearchBox } from "@mapbox/search-js-react"
 import api from '../../../service/api.js'
@@ -7,16 +7,13 @@ import Select from 'react-select'
 
 export default function AddPingFormComponents({setShowFormPing,setPings, pings }) {
 
+  const [alertMsg, setAlertMsg] = useState('')
+  const [showAlertMsg, setShowAlertMsg ]= useState(false)
   const [value, setValue] = React.useState('')
   const [categorySelected, setCategorySelected] = useState(null) 
   const options = categories.map(cat=>({value: cat, label: cat}))   
-  
-  const handleChangeCategory =(e)=>{
-        setCategorySelected(e.value)
-    }
 
-
-  const [ping, setPing]= useState({
+   const [ping, setPing]= useState({
     category: '',
     date: '',
     description: '',
@@ -25,6 +22,11 @@ export default function AddPingFormComponents({setShowFormPing,setPings, pings }
       coordinates:[]
     }
   })
+  
+  const handleChangeCategory =(e)=>{
+        setCategorySelected(e.value)
+    }
+
 
   const handleChangeLoc =(d)=>{
     setValue(d);
@@ -38,6 +40,12 @@ export default function AddPingFormComponents({setShowFormPing,setPings, pings }
   }
 
   const postPing = async()=>{
+      if(!ping.category || !ping.date || ping.description || !ping.location){
+        setShowAlertMsg(true)
+        setAlertMsg("Fill in all fields!!")
+        setTimeout(()=>setShowAlertMsg(false),6000)
+        return
+      }
 
     const newPing = {
       category: ping.category,
@@ -51,12 +59,16 @@ export default function AddPingFormComponents({setShowFormPing,setPings, pings }
       const res = await api.post('/ping', newPing)
       if(res.status === 200 || res.status === 201){
         setShowFormPing(false)
-        console.log("ping aggiunto con successo")
+        setAlertMsg("Ping Added successfully!")
+        setShowAlertMsg(true)
+        
         setPings([...pings, res.data])
       }
 
     } catch (error) {
-      console.log(error)
+      setAlertMsg("Unexpected error occurred while submitting the ping");
+      setShowAlertMsg(true);
+      setTimeout(() => setShowAlertMsg(false), 6000);
     }
   }
 
@@ -126,8 +138,18 @@ export default function AddPingFormComponents({setShowFormPing,setPings, pings }
               accessToken="pk.eyJ1IjoiYXJpZHMiLCJhIjoiY21iNjhkMDdoMmgxcDJqcXpqejZzdGpnaiJ9.opFAeIpz9wc4LDDDOfcehA"
             />
         </Form.Group>
+
+      {showAlertMsg && (
+        <p className='m-0 alertFormAdd'>
+          {alertMsg}
+        </p>
+      )}
+
         <Button className='mt-2' onClick={handleSubmit}>Create</Button>
       </Form>
+
+
+
     </div>
   )
 }
