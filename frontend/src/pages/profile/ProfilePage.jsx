@@ -15,6 +15,7 @@ export default function ProfilePage({setUser}) {
   const [isJoined, setIsJoined] = useState(true)
   const [loading, setLoading] = useState(true)
   const [showFormEdit, setShowFormEdit] = useState(false)
+  const [showBtnEdit, setShowBtnEdit] = useState(false)
 
   const {id} = useParams()
 
@@ -27,10 +28,11 @@ export default function ProfilePage({setUser}) {
        : await api.get('/auth/me')
 
        if(!id){
+        setShowBtnEdit(true)
         localStorage.setItem("user", JSON.stringify(res.data))
         setUser(res.data)
        }
-    
+
        setProfileData(res.data)
        setListPingCreated([...res.data.pingsCreated])
        setListPingsJoined([...res.data.pingsJoined])
@@ -87,12 +89,17 @@ export default function ProfilePage({setUser}) {
               </div>
 
             </div>
-            <button 
-            className='btnEdit btnRotate'
-            onClick={handleEdit}
-            >
-              <i className="fa-solid fa-pencil"></i>
-            </button>
+            {showBtnEdit && (
+              <button 
+              className='btnEdit btnRotate'
+              onClick={handleEdit}
+              >
+                <i className="fa-solid fa-pencil"></i>
+              </button>
+
+            )
+
+            }
 
         </Col>
 

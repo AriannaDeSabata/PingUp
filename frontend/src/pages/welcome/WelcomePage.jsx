@@ -32,6 +32,10 @@ export default function WelcomePage() {
       </div>
 
       <Container className='text-center px-5 contentOverlay' fluid="md">
+        <div className='welcomeArrow'>
+          <i className="fa-solid fa-arrow-down"></i>
+          <p className='swipeTxt'>SWIPE DOWN</p>
+        </div>
 
         <Row>
           <Col md={12} className='contW'>

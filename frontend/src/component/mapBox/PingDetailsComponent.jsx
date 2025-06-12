@@ -56,7 +56,7 @@ export default function PingDetailsComponent({setShowDetails, detailsPing}) {
                   <h6>Creatore</h6>
                   <div className='d-flex gap-3 align-items-center'>
                       <img src={detailsPing.creatorId.avatar} className='imgUser'/>
-                      <Link to={`/profile/${detailsPing.creatorId._id}`}>{detailsPing.creatorId.name} {detailsPing.creatorId.surname}</Link>
+                      <Link className='linkProfile' to={`/profile/${detailsPing.creatorId._id}`}>{detailsPing.creatorId.name} {detailsPing.creatorId.surname}</Link>
                   </div>
               </div>
 
