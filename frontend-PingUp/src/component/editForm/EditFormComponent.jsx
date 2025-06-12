@@ -6,7 +6,6 @@ import api from '../../../service/api'
 
 export default function EditFormComponent({profileData, setShowFormEdit, fetchUser}) {
 
-    const idUser = profileData._id
     const [msg, setMsg] = useState("")
     const [showMsg, setShowMsg] = useState(false)
     const [fileSelected, setFileSelected] = useState(null)
@@ -18,27 +17,43 @@ export default function EditFormComponent({profileData, setShowFormEdit, fetchUs
         email: profileData.email || ""
     })
 
+    //aggiorno lo stato con i dati del form 
     const handleChange = (e)=>{
         setUserUpdate({
             ...userUpdate,
             [e.target.name]: e.target.value
         })
     }
+    
+    //salvo l'immmagine selezionata nello stato
+    const handleChangeFile = (e)=>{
+        setFileSelected(e.target.files[0])
+    }
 
 
+    //Invio i dati aggiornati e l'avatar se presente al server
     const handleSubmit = async(e)=>{
         e.preventDefault()
         try {
             const resp = await api.put('/auth/me', userUpdate )
 
             if(fileSelected){
-                const formData = new FormData()
-                formData.append("avatar", fileSelected)
+                try {
+                    const formData = new FormData()
+                    formData.append("avatar", fileSelected)
+                    await api.put("user/avatar", formData,{
+                        headers:{
+                            'Content-Type': "multipart/form-data"
+                        }
+                    })
+
+                } catch (error) {
+                    setMsg("Error loading image" + error.message)
+                }
+
             }
-
-
-            console.log(resp.data.message)
-            fetchUser()
+            //aggiorno i dati nel profilo
+            await fetchUser()
             setShowFormEdit(false)
 
 
@@ -46,10 +61,6 @@ export default function EditFormComponent({profileData, setShowFormEdit, fetchUs
             setMsg("Something went wrong" + error.message)
             setShowMsg(true)
         }
-    }
-
-    const handleChangeFile = (e)=>{
-        setFileSelected(e.target.files[0])
     }
 
 

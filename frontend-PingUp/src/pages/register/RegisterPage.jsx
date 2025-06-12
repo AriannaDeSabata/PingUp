@@ -9,6 +9,8 @@ export default function RegisterPage() {
   const navigate = useNavigate()
   const [showMsgDeny, setShowMsgDeny] = useState(false)
   const [errorMsg, setErrorMsg] = useState("")
+
+  // Stato per raccogliere i dati dell'utente
   const [userData, setUserData] = useState({
     name: "",
     surname: "",
@@ -18,14 +20,17 @@ export default function RegisterPage() {
     city: ""
   })
 
-
+  // Stato per raccogliere i dati dell'utente
   const postNewUser = async()=>{
     try {
+    
+        // Funzione per inviare i dati al backend
         if(!userData.name || !userData.surname || !userData.email || !userData.password || !userData.city){
           setShowMsgDeny(true)
           setErrorMsg("Fill in all fields!")
           setTimeout(()=>setShowMsgDeny(false), 6000)
           return
+          // Controllo corrispondenza password
         }else if(userData.password !== userData.confirmPsw){
           setShowMsgDeny(true)
           setErrorMsg("The password do not match")
@@ -57,7 +62,7 @@ export default function RegisterPage() {
     }
 
   }
-
+  //recupero i dati dal form
   const handleChange = (e) =>{
     setUserData({
           ...userData,
@@ -65,6 +70,7 @@ export default function RegisterPage() {
     })
   }
 
+  //invio dati
   const handleSubmit = (e)=>{
     e.preventDefault()
     postNewUser()

@@ -1,12 +1,13 @@
 import { Container, Nav, Navbar, Offcanvas } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import './StyleNavBar.css'
-import { Offcanvas as BSOffcanvas } from 'bootstrap'
 
 
 export default function NavBar({user, setUser}) {
 
     const navigate = useNavigate()
+
+    //rimuove i dati dell'utente dallo storage locale e reindirizza alla home
     const handleLogout = ()=>{
       if(user){
         localStorage.removeItem("token")
@@ -15,8 +16,6 @@ export default function NavBar({user, setUser}) {
         navigate('/')
       }
     }
-
-
 
   return (
     <Navbar expand="md" bg="dark" data-bs-theme="dark" fixed='top'>

@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { Alert, Button, Card} from 'react-bootstrap'
 import './styleList.css'
 import api from '../../../service/api.js'
-export default function ListPingComponent({list, isJoined, fetchUser}) {
 
+export default function ListPingComponent({list, isJoined, fetchUser}) {
 
     const [showAlert, setShowAlert ] = useState(false)
     const [msg, setMsg] = useState('')
 
+    //controllo lista ping se è vuota mostra allert
     useEffect(()=>{
       if (!list || list.length === 0){
         setMsg("No pings available")
@@ -17,10 +18,10 @@ export default function ListPingComponent({list, isJoined, fetchUser}) {
       }
     },[list])
 
+    //abbandonare un ping a cui l'utente si è aggiunto
     const leavePing = async(id)=>{
       try {
         const res = await api.put(`ping/leave/${id}` )
-
 
         fetchUser()
         console.log(res)
@@ -29,6 +30,7 @@ export default function ListPingComponent({list, isJoined, fetchUser}) {
       }
     }
 
+    //eliminare un ping
     const deletePing = async ()=>{
       console.log("eliminato")
     }

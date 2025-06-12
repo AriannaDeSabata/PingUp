@@ -10,7 +10,6 @@ import generateCloudinaryStorage
         use_filename: true,
         unique_filename: false,
         overwrite: true,
-        allowed_formats : ["jpg", "png"]
     }))
  }) 
 

@@ -1,9 +1,19 @@
+@media (min-width: 430px){
+  .contChat{
+    width: 60vh;
+    margin: auto;
+  }
+}
+
 .chatMessages{
     height: 60vh;
     overflow-y: auto;
     padding: 10px;
     border-radius: 10px;
-    border: 0.5px solid #ffffff57;
+    background: linear-gradient(to bottom, #c7ba80, #df7474);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 
 }
 .chatMessages p{
@@ -11,7 +21,7 @@
 }
 
 .message {
-  max-width: 50%;
+  width: 50%;
   padding: 8px 12px;
   margin-bottom: 8px;
   border-radius: 20px;
@@ -24,9 +34,7 @@
 }
 
 .myMessage {
-  background-color: #07070700;
-  color: white;
-  border: 1px solid rgb(0, 255, 242);
+  background-color: #fafafa;
   margin-left: auto;
   text-align: right;
   border-bottom-right-radius: 0;
@@ -34,9 +42,7 @@
 }
 
 .theirMessage {
-  background-color: #e5e5ea00;
-  color: rgb(255, 255, 255);
-  border: 1px solid rgb(0, 255, 34);
+  background-color: #7676c4;
   margin-right: auto;
   text-align: left;
   border-bottom-left-radius: 0;
@@ -48,7 +54,7 @@
     height: 60px;
     padding: 10px;
     border-radius: 10px;
-    background-color: #40414000;
+    background-color: #f5f5f500;
     border: 1px solid #ffffff;
     color: #ffff;
     resize: none;

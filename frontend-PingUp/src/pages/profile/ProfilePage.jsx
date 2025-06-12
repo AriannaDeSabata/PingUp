@@ -7,7 +7,7 @@ import ListPingComponent from '../../component/pingList/ListPingComponent'
 import EditFormComponent from '../../component/editForm/EditFormComponent'
 
 
-export default function ProfilePage() {
+export default function ProfilePage({setUser}) {
 
   const [profileData, setProfileData] =useState(null)
   const [listPingsJoined, setListPingsJoined] = useState([])
@@ -18,6 +18,7 @@ export default function ProfilePage() {
 
   const {id} = useParams()
 
+  //recupero  dati user tramite params se esiste altrimenti tramite token
   const fetchUser = async()=>{
     try {
 
@@ -25,10 +26,15 @@ export default function ProfilePage() {
        ?  await api.get(`/user/${id}`)
        : await api.get('/auth/me')
 
+       if(!id){
+        localStorage.setItem("user", JSON.stringify(res.data))
+        setUser(res.data)
+       }
     
        setProfileData(res.data)
        setListPingCreated([...res.data.pingsCreated])
        setListPingsJoined([...res.data.pingsJoined])
+
        setLoading(false)
 
     } catch (error) {
@@ -41,7 +47,6 @@ export default function ProfilePage() {
     fetchUser()
   },[id])
 
-
   if(loading){
     return (
       <div className='d-flex justify-content-center mt-10'>
@@ -50,6 +55,7 @@ export default function ProfilePage() {
     )
   }
 
+  //evento per il form edit
   const handleEdit = (e)=>{
     e.preventDefault()
     setShowFormEdit(true)

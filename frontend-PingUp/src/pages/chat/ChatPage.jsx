@@ -5,6 +5,7 @@ import './styleChatPage.css'
 import { useNavigate } from 'react-router-dom'
 
 
+
 export default function ChatPage() {
   
   const [allChats, setAllChats]= useState([])
@@ -12,6 +13,7 @@ export default function ChatPage() {
   const [selectedChat, setSelectedChat] = useState(false)
 
 
+  //recupero di tutte le chat dell'utente tramite token
   const getAllChat = async()=>{
     try {
       const res = await api.get('/chat')
@@ -21,24 +23,30 @@ export default function ChatPage() {
     }
   }
 
+  //reinderizzo l'utente al componente chat
   const handleChatClick = (chat)=>{
-    setSelectedChat(true)
-    setTimeout(()=>{
-      navigate(`/chat/${chat._id}`, {state: chat})
-    },300)
-
+      setSelectedChat(true)
+      setTimeout(()=>{
+        navigate(`/chat/${chat._id}`, {state: chat})
+      },300)
   }
 
   useEffect(()=>{
     getAllChat()
   },[])
 
+
+
+
   return (
     <Container fluid={"md"} className='mt-10 '>
 
-
       <div className='contChats'>
-        <h3>Chats</h3>
+        <div className='d-flex gap-3 align-items-center contHeader' >
+          <i className="fa-solid fa-comments iconTitle"></i>
+          <h3>Chats</h3>
+        </div>
+
               {allChats.length === 0 && (
                   <div className='msgLoading text-center'>
                     <h5 >There are no chats at the moment, add yourself to a ping"</h5>

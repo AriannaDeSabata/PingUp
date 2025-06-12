@@ -40,6 +40,11 @@ route.get('/:id', async(req , res, next)=>{
 //rotta per il caricamento img profilo
 route.put('/avatar', authMiddleware, uploadAvatar.single('avatar'), async(req ,res, next)=>{
     try {
+
+       if (!req.file) {
+      return res.status(400).json({ message: "Nessun file caricato" })
+        }
+
         const idUser = req.user.id
         const user = await userModel.findByIdAndUpdate(
             idUser,
@@ -47,6 +52,11 @@ route.put('/avatar', authMiddleware, uploadAvatar.single('avatar'), async(req ,r
             {new: true}
         )
     
+        
+        if (!user) {
+        return res.status(404).json({ message: "Utente non trovato" })
+        }
+        
         await user.save()
         res.status(200).json({message: "immagine modificata", user})
 

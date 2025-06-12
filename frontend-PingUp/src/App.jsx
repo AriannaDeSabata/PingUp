@@ -35,7 +35,7 @@ function App() {
           <Route path='/home' element={<HomePage user={user} setUser={setUser}/>}/>
           <Route path='/login' element={<LoginPage/>}/>
           <Route path='/register' element={<RegisterPage/>}/>
-          <Route path='/profile' element={<ProfilePage user={user}/>}/>
+          <Route path='/profile' element={<ProfilePage user={user} setUser={setUser}/>}/>
           <Route path='/profile/:id' element={<ProfilePage />}/>
           <Route path='/chat' element={<ChatPage />}/>
           <Route path='/chat/:id' element={<ChatComponent user={user}/>}/>

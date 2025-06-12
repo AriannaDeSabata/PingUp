@@ -6,6 +6,7 @@ import { Container } from 'react-bootstrap'
 import './styleChatComponent.css'
 
 export default function ChatComponent({user}) {
+    
 
     const {id} = useParams()
     const [chat, setChat] = useState(null)
@@ -14,7 +15,7 @@ export default function ChatComponent({user}) {
     const navigate = useNavigate()
 
 
- 
+    //recupera i dati dalla chat e unisce l'utente alla stanza socket
     useEffect(()=>{
         const fetchChatAndJoin = async()=>{
             try {
@@ -31,7 +32,7 @@ export default function ChatComponent({user}) {
 
     },[id])
 
-
+    //ricevi i nuovi messaggi dal socket in tempo reale
     useEffect(() => {
         const handleMessage = (data) => {
             setAllMessages(prevMessages => [...prevMessages, data])
@@ -41,7 +42,7 @@ export default function ChatComponent({user}) {
         return () => socket.off("send_message", handleMessage)
     }, [])
 
-    
+    //Invia un nuovo messaggio
     const handleSend = ()=>{
         socket.emit("send_message",{
             chatId: chat._id,
@@ -51,6 +52,7 @@ export default function ChatComponent({user}) {
         setMessage("")
     }
 
+    //Torna alla lista della chat
     const handleBack = ()=>{
         navigate('/chat')
     }
@@ -60,6 +62,7 @@ export default function ChatComponent({user}) {
   return (
 
         <Container className='mt-10'>
+        <div className='contChat'> 
             <div className='d-flex mb-2'>
                 <div className='infoChat'>
                     <div className='d-flex align-items-center gap-3'>
@@ -95,8 +98,15 @@ export default function ChatComponent({user}) {
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Scrivi un messaggio..."
                 className='textArea'
+                onKeyDown={(e)=>{
+                    if(e.key === "Enter" && !e.shiftKey ){
+                        e.preventDefault()
+                        handleSend()
+                    }
+                }}
             ></textarea>
             <button onClick={handleSend} className='btnSendMsg'>Invia</button>
+        </div>
         </Container>
 
 
