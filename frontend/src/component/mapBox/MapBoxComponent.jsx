@@ -2,13 +2,13 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Alert, Col, Container, Row } from 'react-bootstrap'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import './styleMapbox.css'
 import AddPingFormComponents from './AddPingFormComponents'
 import api from '../../../service/api'
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import SearchFormComponent from './SearchFormComponent'
 import PingDetailsComponent from './PingDetailsComponent'
 import { SearchBox } from '@mapbox/search-js-react'
+import './styleMapBox.css'
 
 
 export default function MapBoxComponent({city}) {
