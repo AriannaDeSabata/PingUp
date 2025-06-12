@@ -79,6 +79,8 @@
     border-radius: 50%;
     background-color: rgba(12, 142, 175, 0.61);
     padding: 10px;
+    animation: pulse 1s ease infinite;
+
 }
 
 .iconEl{
@@ -87,6 +89,18 @@
 
 }
 
+
+@keyframes pulse {
+    0%{
+            box-shadow: none
+    }
+    50%{
+            box-shadow: rgba(1, 133, 173, 0.61) 0px 0px 1px 3px;
+    }
+    100%{
+        box-shadow: none;
+    }
+}
 
 /*css detailsForm*/
 .imgUser{
