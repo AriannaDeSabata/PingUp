@@ -135,7 +135,7 @@ export default function AddPingFormComponents({setShowFormPing,setPings, pings }
           <SearchBox
               options={{
                 type: ['place', 'poi'],
-                language: ['it', 'en']
+                language: ['it']
               }}
               name='location'
               value={value}
