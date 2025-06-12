@@ -35,6 +35,7 @@ export default function MapBoxComponent({city}) {
 
     mapboxgl.accessToken= accessToken
 
+    //recupero di tutti i ping
     const getAllPing = async()=>{
       try {
         const res = await api.get('/ping')
@@ -48,11 +49,12 @@ export default function MapBoxComponent({city}) {
       }
     }
 
+    //Carica la mappa centrata sulla città dell'utente e imposta i controlli
     useEffect(()=>{
         if(!city) return
 
         const loadMapWithCity = async()=>{
-
+          //endpoint per il geocoding di city 
             const res = await fetch(
             `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(city)}.json?access_token=${mapboxgl.accessToken}`
             )
@@ -62,7 +64,7 @@ export default function MapBoxComponent({city}) {
                 console.error("Error: Coordinates not found")
                 return
             }
-
+            //creo la mappa solo se non esiste già
             if(!mapRef.current){
                 mapRef.current = new mapboxgl.Map({
                 container: mapContainerRef.current,
@@ -71,10 +73,11 @@ export default function MapBoxComponent({city}) {
                 zoom: 7
             })
 
+            //button per la navigazione nella mappa
                mapRef.current.addControl(new mapboxgl.NavigationControl(), 'bottom-right')
 
 
-               //listener zoom
+               //Modifica la dimensione dei marker in base allo zoom
               mapRef.current.on('zoom', () => {
                   const zoom = mapRef.current.getZoom()
 
@@ -100,7 +103,7 @@ export default function MapBoxComponent({city}) {
 
         loadMapWithCity()
 
-
+        //pulizia della mappa quando il componente viene smontato 
         return () => {
         if(mapRef.current){
           mapRef.current.remove()
@@ -109,6 +112,7 @@ export default function MapBoxComponent({city}) {
     }
     },[city])
 
+    //aggiungi marker alla mappa
     useEffect(()=>{
 
       markersRef.current.forEach(marker => marker.remove())
@@ -158,16 +162,17 @@ export default function MapBoxComponent({city}) {
 
 
       <div className='position-relative'>
-                <SearchBox
-                    accessToken={accessToken}
-                    className="searchBoxMap"
-                    map={mapRef.current}
-                    mapboxgl={mapboxgl}
-                    value={inputValue}
-                    onChange={(d) => {
-                      setInputValue(d);
-                    }}
-                  />
+              <SearchBox
+                accessToken={accessToken}
+                className="searchBoxMap"
+                map={mapRef.current}
+                mapboxgl={mapboxgl}
+                value={inputValue}
+                onChange={(val) => setInputValue(val)}
+                options={{
+                  types: ['place', 'poi'],
+                }}
+              />
 
           <div ref={mapContainerRef} className='mapContainer'></div>
 

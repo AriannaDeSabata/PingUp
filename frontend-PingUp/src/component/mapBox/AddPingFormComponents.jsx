@@ -12,6 +12,8 @@ export default function AddPingFormComponents({setShowFormPing,setPings, pings }
   const [value, setValue] = React.useState('')
   const [categorySelected, setCategorySelected] = useState(null) 
   const options = categories.map(cat=>({value: cat, label: cat}))   
+  
+  const accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
 
    const [ping, setPing]= useState({
     category: '',
@@ -23,6 +25,7 @@ export default function AddPingFormComponents({setShowFormPing,setPings, pings }
     }
   })
   
+  //recupero la categoria 
   const handleChangeCategory =(e)=>{
         setCategorySelected(e.value)
     }
@@ -31,6 +34,7 @@ export default function AddPingFormComponents({setShowFormPing,setPings, pings }
   const handleChangeLoc =(d)=>{
     setValue(d);
   }
+  //aggiorno lo stato con i dati del form
   const handleChange = (e) => {
     setPing({
       ...ping,
@@ -38,7 +42,7 @@ export default function AddPingFormComponents({setShowFormPing,setPings, pings }
       category : categorySelected
     })
   }
-
+  //controlli dei campi del form, fetch per l'invio dei dati al backend
   const postPing = async()=>{
       if(!ping.category || !ping.date || !ping.description || !ping.location){
         setShowAlertMsg(true)
@@ -75,12 +79,13 @@ export default function AddPingFormComponents({setShowFormPing,setPings, pings }
     }
   }
 
+  //invio dati
   const handleSubmit= (e)=>{
     e.preventDefault()
     postPing()
 
   }
-
+  //recupero coordinate 
   const handleLocation = (res)=>{
 
     const loc = res.features[0]
@@ -129,16 +134,14 @@ export default function AddPingFormComponents({setShowFormPing,setPings, pings }
           <Form.Label>Location</Form.Label>
           <SearchBox
               options={{
-                proximity: {
-                  lng: -122.431297,
-                  lat: 37.773972,
-                },
+                type: ['place', 'poi'],
+                language: ['it', 'en']
               }}
               name='location'
               value={value}
               onChange={handleChangeLoc}
               onRetrieve={handleLocation}
-              accessToken="pk.eyJ1IjoiYXJpZHMiLCJhIjoiY21iNjhkMDdoMmgxcDJqcXpqejZzdGpnaiJ9.opFAeIpz9wc4LDDDOfcehA"
+              accessToken={accessToken}
             />
         </Form.Group>
 

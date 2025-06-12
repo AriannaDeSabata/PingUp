@@ -9,6 +9,7 @@ export default function PingDetailsComponent({setShowDetails, detailsPing}) {
   const [showAlertMsg, setShowAlertMsg] = useState(false)
   const idPing = detailsPing._id
 
+  //funzione per unirsi a un ping 
     const joinPing = async()=>{
       try {
         const res = await api.put('/ping/join/' + idPing )

@@ -10,11 +10,11 @@ export default function SearchFormComponent({pings, setPings, setCity,setShowFor
 
     const options = categories.map(cat=>({value: cat, label: cat}))
 
-
+  //aggiorno lo stato con la categoria selezionata
     const handleChangeCategory =(e)=>{
         setCategorySelected(e.value)
     }
-
+    //filtro i ping in base alla categoria o alla data
     const handleSubmit = ()=>{
         if(categorySelected !== null || dateSearch !== null){
           const filteredPings = allPings.filter(ping =>{
@@ -25,6 +25,8 @@ export default function SearchFormComponent({pings, setPings, setCity,setShowFor
           setShowFormSearch(false)
         }
       }
+
+    //ripristino l'elenco dei pings
       const handleReset = ()=>{
         setPings(allPings)
         setShowFormSearch(false)
