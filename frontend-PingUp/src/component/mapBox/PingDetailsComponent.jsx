@@ -44,27 +44,29 @@ export default function PingDetailsComponent({setShowDetails, detailsPing}) {
         <div>
           <button onClick={e=>setShowDetails(false)} className='closeForm'>x</button>
             <div className='d-flex flex-column gap-3'>
-                <div className='d-flex gap-3 align-items-center'>
-                <div>
+
+                <div className='d-flex align-items-center gap-3'> 
                     <i className={detailsPing.icon}></i>
+                    <h3>{detailsPing.category}</h3>
                 </div>
 
-                <h2>{detailsPing.category}</h2>
-                </div>
-                <span>{new Date(detailsPing.date).toLocaleDateString()}</span>
+                <span className='datePing'>{new Date(detailsPing.date).toLocaleDateString()}</span>
+              <div>
+                  <h6>Creatore</h6>
+                  <div className='d-flex gap-3 align-items-center'>
+                      <img src={detailsPing.creatorId.avatar} className='imgUser'/>
+                      <Link to={`/profile/${detailsPing.creatorId._id}`}>{detailsPing.creatorId.name} {detailsPing.creatorId.surname}</Link>
+                  </div>
+              </div>
 
-                <div className='d-flex gap-3 align-items-center'>
-                    <img src={detailsPing.creatorId.avatar} className='imgUser'/>
-                    <Link to={`/profile/${detailsPing.creatorId._id}`}>{detailsPing.creatorId.name} {detailsPing.creatorId.surname}</Link>
-                </div>
-
-
-                <p>{detailsPing.description}</p>
-
+              <div>
+                <h6>Description</h6>
+                <p className='descriptionPing'>{detailsPing.description}</p>
+              </div>
                 {showAlertMsg && (
                     <Alert variant={"light"}>{msg}</Alert>
                 )}
-                <Button onClick={joinPing}>Join</Button>
+                <Button className='btn-success' onClick={joinPing}>Join</Button>
 
             </div>
         </div>

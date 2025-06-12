@@ -1,30 +1,16 @@
+/*css contMap*/
 .mapContainer{
     width: 100%;
-    height: 600px;
+    height: 88vh;
 
 }
-.mapboxgl-canvas {
-  width: 100%;
-  height: 100%;
-}
 
-@media (max-width: 768px){
-    .mapContainer{
-        height: 550px;
-    }
-}
-
-@media (max-width: 430px){
-    .mapContainer{
-        height: 600px;
-    }
-}
 .listPings{
     height: 500px;
     background-color: #aaaaaa;
 }
 
-
+/*css buttton*/
 .buttonMap {
     position: absolute;
     right: 20px;
@@ -38,12 +24,13 @@
     font-size: 20px;
 }
 .addPing{
-    top: 50px;
+    top: 80px;
 }
 .searchBtn{
-    top: 110px;
+    top: 140px;
 }
 
+/*css form*/
 .form{
     width: 350px;
     background-color: #ffffff;
@@ -73,6 +60,7 @@
     margin-bottom: 0;
 }
 
+/*css marker*/
 .list{
     position: absolute;
     z-Index: 1000;
@@ -83,20 +71,24 @@
 }
 
 .iconMarker{
+    width: 40px ;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    background-color: #08be0881;
-
+    background-color: rgba(12, 142, 175, 0.61);
+    padding: 10px;
 }
 
 .iconEl{
-    font-size: 24px;
+    font-size: 24px ;
     color: rgb(0, 0, 0);
 
 }
 
+
+/*css detailsForm*/
 .imgUser{
     width: 30px;
     height: 30px;
@@ -107,3 +99,27 @@
     text-align: center;
     color: red;
 }
+.mapboxgl-popup-content{
+    border-radius: 10px; 
+}
+
+#detailsBtn{
+    margin: 5px;
+    background-color: rgb(12, 142, 175);
+    color: #ffff;
+    border: none;
+    border-radius: 20px;
+    padding: 5px 10px ;
+    font-size: 1.2em;
+}
+
+.datePing{
+    font-size: 0.9em;
+}
+
+.descriptionPing{
+    border: 1px solid rgb(216, 216, 216);
+    border-radius: 10px;
+    padding: 10px;
+}
+

@@ -1,0 +1,94 @@
+.chatMessages{
+    height: 60vh;
+    overflow-y: auto;
+    padding: 10px;
+    border-radius: 10px;
+    border: 0.5px solid #ffffff57;
+
+}
+.chatMessages p{
+    margin: 0;
+}
+
+.message {
+  max-width: 50%;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  border-radius: 20px;
+  word-wrap: break-word;
+  font-size: 15px;
+  line-height: 1.3;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.myMessage {
+  background-color: #07070700;
+  color: white;
+  border: 1px solid rgb(0, 255, 242);
+  margin-left: auto;
+  text-align: right;
+  border-bottom-right-radius: 0;
+  flex-direction: row-reverse;
+}
+
+.theirMessage {
+  background-color: #e5e5ea00;
+  color: rgb(255, 255, 255);
+  border: 1px solid rgb(0, 255, 34);
+  margin-right: auto;
+  text-align: left;
+  border-bottom-left-radius: 0;
+}
+
+
+.textArea{
+    width: 100%;
+    height: 60px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #40414000;
+    border: 1px solid #ffffff;
+    color: #ffff;
+    resize: none;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.btnSendMsg{
+    margin-top: 10px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    background-color:#10d44b ;
+    color: #ffff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.avatarChatMsg{
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+}
+
+.btnBack{
+  width: 100%;
+  text-align: right;
+  border: none;
+  background-color: transparent;
+  color: #ffffff;
+}
+
+.infoChat{
+  display: flex;
+  align-items: center;
+  font-size: 10px;
+  color: #ffff;
+  flex-grow: 2;
+}
+.infoChat p{
+  margin: 0;
+}

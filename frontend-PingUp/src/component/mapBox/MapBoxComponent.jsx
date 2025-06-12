@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Col, Container, Row } from 'react-bootstrap'
+import { Alert, Col, Container, Row } from 'react-bootstrap'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import './styleMapbox.css' 
@@ -11,21 +11,29 @@ import PingDetailsComponent from './PingDetailsComponent'
 import { SearchBox } from '@mapbox/search-js-react'
 
 
-export default function MapBoxComponent({city, setCity}) {
-    mapboxgl.accessToken= import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
+export default function MapBoxComponent({city}) {
+
+    const accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN
 
     const [showFormPing, setShowFormPing] = useState(false)
     const [showFormSearch, setShowFormSearch] =useState(false)
     const [showDetails, setShowDetails] = useState(false)
+
     const mapContainerRef = useRef(null)
     const mapRef = useRef(null)
     const markersRef = useRef([])
+
     const [allPings, setAllPings] = useState([])
     const [pings, setPings] = useState([])
     const [detailsPing, setDetailsPing] = useState()
-    const [inputValue, setInputValue] = useState("");
 
-    const accessToken = 'pk.eyJ1IjoiYXJpZHMiLCJhIjoiY21iNjhkMDdoMmgxcDJqcXpqejZzdGpnaiJ9.opFAeIpz9wc4LDDDOfcehA'
+    const [inputValue, setInputValue] = useState("")
+
+    const [errMsg, setErrMsg] = useState("")
+    const [showErr, setShowErr] = useState(false)
+
+
+    mapboxgl.accessToken= accessToken
 
     const getAllPing = async()=>{
       try {
@@ -34,7 +42,9 @@ export default function MapBoxComponent({city, setCity}) {
         setAllPings(res.data)
 
       } catch (error) {
-        console.log(error)
+        console.error("Error fetching pings: ", error)
+        setErrMsg("Failed to load pings. Please try again later!")
+        setShowErr(true)
       }
     }
 
@@ -49,19 +59,39 @@ export default function MapBoxComponent({city, setCity}) {
             const data = await res.json();
             const coords = data.features[0].center;
             if(!coords){
-                console.log("errore coordinate non trovate")
+                console.error("Error: Coordinates not found")
                 return
             }
 
             if(!mapRef.current){
                 mapRef.current = new mapboxgl.Map({
                 container: mapContainerRef.current,
-                style: 'mapbox://styles/arids/cmb69umbi00mm01r20lvs460m',
+                style: 'mapbox://styles/arids/cmbs5rhqw000o01qw74a54i50',
                 center: coords,
                 zoom: 7
             })
 
                mapRef.current.addControl(new mapboxgl.NavigationControl(), 'bottom-right')
+
+
+               //listener zoom
+              mapRef.current.on('zoom', () => {
+                  const zoom = mapRef.current.getZoom()
+
+                  markersRef.current.forEach(marker => {
+                    const el = marker.getElement()
+
+                    const size = Math.max(10, zoom * 5) 
+                    el.style.width = `${size}px`;
+                    el.style.height = `${size}px`;
+
+                    
+                    const iconEl = el.querySelector('.iconEl')
+                    if(iconEl) {
+                      iconEl.style.fontSize = `${size * 0.5}px` 
+                    }
+                  })
+                })
             }
 
            getAllPing()
@@ -123,50 +153,56 @@ export default function MapBoxComponent({city, setCity}) {
 
 
   return (
-    <Container className='py-3 px-0 '>
-      <Row className='gx-0'>
-        <Col xs={12} className='position-relative'>
-              <SearchBox
-                  accessToken={accessToken}
-                  map={mapRef.current}
-                  mapboxgl={mapboxgl}
-                  value={inputValue}
-                  onChange={(d) => {
-                    setInputValue(d);
-                  }}
-                />
+    <>    
+      {showErr && <Alert variant="danger">{errMsg}</Alert>}
 
-        <div ref={mapContainerRef} className='mapContainer'></div>
 
-          <button className='addPing buttonMap'onClick={()=>{
-            setShowFormPing(true)
-            setShowFormSearch(false)
-            setDetailsPing(false)
-            }}>
-              <i className="fa-solid fa-plus"></i>
+      <div className='position-relative'>
+                <SearchBox
+                    accessToken={accessToken}
+                    className="searchBoxMap"
+                    map={mapRef.current}
+                    mapboxgl={mapboxgl}
+                    value={inputValue}
+                    onChange={(d) => {
+                      setInputValue(d);
+                    }}
+                  />
+
+          <div ref={mapContainerRef} className='mapContainer'></div>
+
+            <button className='addPing buttonMap'onClick={()=>{
+              setShowFormPing(true)
+              setShowFormSearch(false)
+              setShowDetails(false)
+              }}>
+                <i className="fa-solid fa-plus"></i>
+              </button>
+
+            {showFormPing &&(
+              <AddPingFormComponents setShowFormPing={setShowFormPing} setPings={setPings} pings={pings}/>
+            )}
+
+            <button className='searchBtn buttonMap' onClick={()=>{
+              setShowFormSearch(true)
+              setShowFormPing(false)
+              setShowDetails(false)
+              }}>
+              <i className="fa-solid fa-magnifying-glass"></i>
             </button>
 
-          {showFormPing &&(
-            <AddPingFormComponents setShowFormPing={setShowFormPing} setPings={setPings} pings={pings}/>
-          )}
+            {showFormSearch && (
+              <SearchFormComponent pings={pings} setPings={setPings} setShowFormSearch={setShowFormSearch}  allPings={allPings} map={mapRef.current}/>
+            )}
 
-          <button className='searchBtn buttonMap' onClick={()=>{
-            setShowFormSearch(true)
-            setShowFormPing(false)
-            setDetailsPing(false)
-            }}>
-            <i className="fa-solid fa-magnifying-glass"></i>
-          </button>
+            {showDetails && (
+              <PingDetailsComponent setShowDetails={setShowDetails} detailsPing={detailsPing}/>
+            )}
+      </div>
 
-          {showFormSearch && (
-            <SearchFormComponent pings={pings} setPings={setPings} setShowFormSearch={setShowFormSearch}  allPings={allPings} map={mapRef.current}/>
-          )}
 
-          {showDetails && (
-            <PingDetailsComponent setShowDetails={setShowDetails} detailsPing={detailsPing}/>
-          )}
-        </Col>
-      </Row>
-    </Container>
+
+     </>
+
   )
 }

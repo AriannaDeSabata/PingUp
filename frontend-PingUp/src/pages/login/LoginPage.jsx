@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 import { Button, Container, Form } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
-import './styleLogin.css'
 import api from '../../../service/api.js'
 
 export default function LoginPage() {
+
+  const [msg, setMsg] = useState('')
+  const [showAlertMsg, setShowAlertMsg] = useState(false)
+
   const [loginUser, setLoginUser] = useState({
     email: '',
     password:''
@@ -12,48 +15,62 @@ export default function LoginPage() {
 
   const navigate = useNavigate()
 
+  //recupero i dati dal form è aggiorno lo stato loginUser
   const handleChange = (e)=> {
     setLoginUser({
       ...loginUser,
       [e.target.name]: e.target.value
     })
   }
+
+  //invio i dati di login al backend 
   const handleSubmit= async (e)=>{
     e.preventDefault()
     
     try {
+        if(!loginUser.email || !loginUser.password){
+          setMsg("Fill in all fields")
+          setShowAlertMsg(true)
+          return
+        }
+
         const res = await api.post('/auth/login', loginUser)
         const token = res.data.token
         localStorage.setItem("token", token)
         navigate('/home')
 
+
     } catch (error) {
-      console.log('errore nel login controlla le credenziali'+ error)
+      console.error('Login Failed'+ error)
+      setMsg(error.response.data.message)
+      setShowAlertMsg(true)
+
+
     }
 
   }
 
 
-
   return (
-    <Container fluid="sm" className='my-4 py-5'>
-      <h1 className='text-center mb-0'>Login</h1>
-      <Form className='m-5 d-flex flex-column gap-3 '>
+    <Container fluid={"md"} className='mt-10 p-5'>
+      <h1 className='titleForm '>Login</h1>
+      <Form className='d-flex justify-content-center'>
 
-        <Form.Group >
+        <Form.Group className='formRegLog' >
           <Form.Control type='email' name='email' placeholder='Email'onChange={handleChange} value={loginUser.email}/>
-        </Form.Group>
 
-        <Form.Group>
           <Form.Control type='password' name='password' placeholder='password' onChange={handleChange} value={loginUser.password}/>
+
+
+        {showAlertMsg && (
+          <p className='styleAlert'>{msg}</p>
+        )}
+
+        <Button onClick={handleSubmit}>Login</Button>
+
+        <Link to="/register" className="linkFormRegLog">Don't have an account? <span>Register</span></Link>
         </Form.Group>
 
-        <Form.Group className="contBtn">
-            <Button className='btn-warning' onClick={handleSubmit}>
-              Login
-            </Button>
-          <Link to="/register" className="txtRegisterLink">Don't have an account? <span className='registerLink'>Register</span></Link>
-        </Form.Group>
 
 
       </Form>

@@ -12,7 +12,10 @@ const chatSchema = new mongoose.Schema({
     messages: [{
         type: mongoose.Schema.ObjectId,
         ref: "Message"
-    }]
+    }],
+    unreadCount: {
+        type: Map,
+    }
 })
 
 

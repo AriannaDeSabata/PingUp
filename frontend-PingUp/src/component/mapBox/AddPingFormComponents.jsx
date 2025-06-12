@@ -40,7 +40,7 @@ export default function AddPingFormComponents({setShowFormPing,setPings, pings }
   }
 
   const postPing = async()=>{
-      if(!ping.category || !ping.date || ping.description || !ping.location){
+      if(!ping.category || !ping.date || !ping.description || !ping.location){
         setShowAlertMsg(true)
         setAlertMsg("Fill in all fields!!")
         setTimeout(()=>setShowAlertMsg(false),6000)
@@ -58,10 +58,13 @@ export default function AddPingFormComponents({setShowFormPing,setPings, pings }
     try {
       const res = await api.post('/ping', newPing)
       if(res.status === 200 || res.status === 201){
-        setShowFormPing(false)
+
         setAlertMsg("Ping Added successfully!")
         setShowAlertMsg(true)
-        
+        setTimeout(()=>{
+          setShowFormPing(false)
+        },1000)
+
         setPings([...pings, res.data])
       }
 

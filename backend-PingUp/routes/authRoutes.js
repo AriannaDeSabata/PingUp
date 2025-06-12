@@ -33,10 +33,10 @@ route.post('/login', async(req ,res ,next)=>{
                 })
 
             }else{
-                res.status(400).json({message: "Password erratta!"})
+                res.status(400).json({message: "Invalid Password!"})
             }
         }else{
-            res.status(400).json({message: "Email non valida"})
+            res.status(400).json({message: "Invalid Email!"})
         }
 
 
@@ -95,7 +95,7 @@ route.get('/me', authMiddleware , async(req ,res ,next)=>{
         })
         
         if(!user){
-            return res.status(400).json({message: "user Not Found"})
+            return res.status(400).json({message: "User Not Found"})
         }
 
 

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.2",
+    "@lottiefiles/dotlottie-react": "^0.14.1",
     "@mapbox/mapbox-gl-geocoder": "^5.0.3",
     "@mapbox/search-js-react": "^1.1.0",
     "axios": "^1.9.0",

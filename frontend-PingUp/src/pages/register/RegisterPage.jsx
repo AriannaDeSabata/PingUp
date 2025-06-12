@@ -72,11 +72,11 @@ export default function RegisterPage() {
   }
 
   return (
-    <Container fluid="sm" className='my-4 py-5'>
-      <h1 className='text-center mb-0'>Register</h1>
-      <Form className='m-5 d-flex flex-column gap-3 '>
+    <Container fluid="sm" className='mt-10 py-5'>
+      <h1 className='titleForm'>Register</h1>
+      <Form className='d-flex justify-content-center'>
 
-        <Form.Group  className='d-flex gap-3 flex-column'>
+        <Form.Group  className='formRegLog'>
 
           <Form.Control type='text' name='name' placeholder='Name' value={userData.name} onChange={handleChange}/>
 
@@ -90,16 +90,16 @@ export default function RegisterPage() {
 
           <Form.Control type='text' name='city' placeholder='City'value={userData.city} onChange={handleChange}/>
 
-        </Form.Group>
 
         {showMsgDeny &&(
-          <p className='errorMsg'>{errorMsg}</p>
+          <p className='styleAlert'>{errorMsg}</p>
         )}
 
-        <Form.Group className='d-flex flex-column text-center gap-1'>
           <Button className='btn-warning' onClick={handleSubmit}>Register</Button>
-          <Link to="/login" className="txtRegisterLink">You already have an account? <span className='registerLink'>Login</span></Link>
+          <Link to="/login" className="linkFormRegLog">You already have an account? <span>Login</span></Link>
+
         </Form.Group>
+
       </Form>
     </Container>
   )

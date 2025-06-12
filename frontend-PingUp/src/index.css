@@ -1,0 +1,97 @@
+.styleAlert{
+    color: red;
+}
+
+body{
+    background-color: #1b1b1b !important;
+}
+
+.link{
+    text-decoration: none;
+    color: #ffff;
+}
+
+/*animation rotate button*/
+.btnRotate{
+    transition: transform 0.4s ease-in-out;
+}
+
+.btnRotate:active{
+    transform: rotateY(180deg);
+}
+
+
+
+/* margin-top 100px*/
+.mt-10{
+    margin-top: 100px;
+}
+
+/*margin-top 60px*/
+.mt-6{
+    margin-top: 60px;
+}
+
+/*css Login Register*/
+.contBtnFormRegLog{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    text-align: center;
+}
+
+
+.linkFormRegLog{
+    text-decoration: none;
+    color: #ffff;
+    width: 100%;
+    font-size: 0.9em;
+}
+.linkFormRegLog span{
+    color: blue;
+}
+
+.formRegLog{
+    width: 350px;
+    display: flex;
+    gap: 15px;
+    flex-direction: column;
+
+}
+
+.formRegLog input{
+    background-color:rgba(253, 253, 253, 0);
+    border: 0.5px solid rgba(99, 99, 99, 0.562);
+    color: #fff;
+}
+.formRegLog input::placeholder{
+    color: #fff;
+}
+
+.titleForm{
+    margin-bottom: 50px;
+    text-align: center;
+    color: #ffffffcb;
+
+}
+
+
+/*css home*/
+.msgLoading{
+    height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #ffffffcb;
+
+}
+
+
+
+.errorMsg{
+    color: red;
+}
+
+
+

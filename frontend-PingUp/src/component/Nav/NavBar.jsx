@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react'
 import { Container, Nav, Navbar, Offcanvas } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import './StyleNavBar.css'
+import { Offcanvas as BSOffcanvas } from 'bootstrap'
 
 
 export default function NavBar({user, setUser}) {
 
     const navigate = useNavigate()
-    const token = localStorage.getItem("token")
     const handleLogout = ()=>{
-
-      if(token){
+      if(user){
         localStorage.removeItem("token")
         localStorage.removeItem('user')
         setUser(null)
@@ -18,21 +16,30 @@ export default function NavBar({user, setUser}) {
       }
     }
 
+
+
   return (
-    <Navbar expand="md" className="bg-body-tertiary mb-3">
-    <Container >
+    <Navbar expand="md" bg="dark" data-bs-theme="dark" fixed='top'>
+    <Container className='mx-md-3' fluid={"fluid"}>
 
-      {user &&(
-          <Link to={'/profile'}><img src={user.avatar} alt='avatar'className='avatar me-3'/></Link>
-      )}
+      <div className='d-flex align-items-center gap-3'>
+        {user &&(
+            <Link to={'/profile'}><img src={user.avatar} alt='avatar'className='avatar btnRotate '/></Link>
+        )}
+          <Navbar.Brand href="/" className='brand'>PingUp</Navbar.Brand>
+
+      </div>
 
 
-        <Navbar.Brand href="/" className='brand'>PingUp</Navbar.Brand>
+
+      <div>
         <Navbar.Toggle aria-controls="offcanvasNavbar" />
         <Navbar.Offcanvas
         id="offcanvasNavbar"
         aria-labelledby="offcanvasNavbarLabel"
         placement="end"
+        className="bg-dark text-white"
+        data-bs-theme="dark"
         >
         <Offcanvas.Header closeButton>
             <Offcanvas.Title id="offcanvasNavbarLabel">
@@ -40,14 +47,39 @@ export default function NavBar({user, setUser}) {
             </Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-            <Nav className="justify-content-end flex-grow-1 pe-3 gap-2">
-                <Link to="/home" className='linkNav'>Home</Link>
-                <Link to="/register" className='linkNav'>Register</Link>
-                <Link to="/login" className='linkNav'>Login</Link>
-                <button className='logOut'onClick={handleLogout}>LogOut</button>
+            <Nav className="contLinkNav">
+              {user && (
+                <Link to="/home" className='linkNav'>Map</Link>
+              )}
+
+                {!user && (
+                  <>
+                  <Link to="/register" className='linkNav' >Register</Link>
+                  <Link to="/login" className='linkNav'>Login</Link>
+                  </>
+                )}
+                {user &&(
+                  <>
+                     <Link to={'/chat'} className='chatLink d-none d-md-flex btnRotate'>
+                        <i className="fa-regular fa-comments"></i>
+                      </Link>
+
+                     <Link to={'/chat'}  className='linkNav d-md-none'>
+                        Chat
+                      </Link>
+
+                      <Link to="/profile" className='linkNav'>Profile</Link>
+                 
+
+                      <button className='logOut 'onClick={handleLogout}>LogOut</button>
+                  </>
+
+                )}
+
             </Nav>
         </Offcanvas.Body>
         </Navbar.Offcanvas>
+      </div>
 
     </Container>
     </Navbar>

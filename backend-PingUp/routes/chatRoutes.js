@@ -1,6 +1,7 @@
 import express from 'express'
 import chatModel from '../models/ChatModel.js'
 import authMiddleware from '../middlewares/authMiddleware.js'
+import messageModel from '../models/MessageModel.js'
 
 const route = express.Router()
 
@@ -13,7 +14,7 @@ route.get('/', authMiddleware, async(req, res, next)=>{
         })
         .populate({
             path: "ping",
-            select: ["_id","category", "date"]
+            select: ["_id","category", "date","icon"]
         })
         .populate({
             path: "participants",
@@ -47,7 +48,7 @@ route.get('/:id', authMiddleware, async(req ,res, next)=>{
         })
         .populate({
             path: "ping",
-            select: ["_id","category", "date"]
+            select: ["_id","category", "date", "icon"]
         })
         .populate({
             path: "participants",
@@ -74,6 +75,23 @@ route.get('/:id', authMiddleware, async(req ,res, next)=>{
 })
 
 
+route.get('/:id/messages',  authMiddleware, async(req,res,next)=>{
+    try {
+        const messages = await messageModel
+        .find({chat: req.params.id })
+        .populate({
+            path: "sender",
+            select: ["name", "surname","avatar"]
+        })
+        .populate({
+            path: "text"
+        })
 
+        res.status(200).json(messages)
+
+    } catch (error) {
+        next(error)
+    }
+})
 
 export default route

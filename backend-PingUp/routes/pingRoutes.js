@@ -3,6 +3,8 @@ import pingModel from '../models/PingModel.js'
 import authMiddleware from '../middlewares/authMiddleware.js'
 import chatModel from '../models/ChatModel.js'
 import userModel from '../models/UserModel.js'
+import mongoose from 'mongoose'
+import messageModel from '../models/MessageModel.js'
 
 const route = express.Router()
 
@@ -94,8 +96,21 @@ route.delete('/:id', authMiddleware, async(req, res, next)=>{
             return res.status(401).json({message: "Unauthorized"})
         }
 
-        await pingModel.findByIdAndDelete(id)
 
+        await userModel.findByIdAndUpdate(
+        idUser,
+        { $pull: { pingsJoined: new mongoose.Types.ObjectId(id) } }
+        )
+
+        const chat = await chatModel.findOne({ ping: id })
+
+    
+        if (chat) {
+        await messageModel.deleteMany({ chat: chat._id })
+        await chatModel.findByIdAndDelete(chat._id)
+        }
+
+        await pingModel.findByIdAndDelete(id)
         res.status(200).json({message: "Ping deleted successfully"})
 
     } catch (error) {
@@ -165,6 +180,16 @@ route.put('/leave/:id', authMiddleware, async(req, res, next)=>{
         ping.participants.pull({user:idUser})
         await ping.save()
 
+        await userModel.findByIdAndUpdate(
+        idUser,
+        { $pull: { pingsJoined: new mongoose.Types.ObjectId(idPing) } }
+        )
+
+        const chat = await chatModel.findOne({ ping: idPing });
+        if (chat) {
+        chat.participants.pull(idUser);   
+        await chat.save();                 
+        }
         res.status(200).json({messagge: "You left the event"})
 
     } catch (error) {

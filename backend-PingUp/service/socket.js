@@ -3,40 +3,41 @@ import chatModel from "../models/ChatModel.js"
 
 
 const setUpSocket =  (io) => {
-    //evento che si attiva quando il client si connette
+    //connessione
   io.on('connection', (socket) => {
     console.log('🟢 Client connesso:', socket.id)
 
-    //evento che si attiva quando il client chiude la pagina, si disconnette, aggiorna il browser
-    socket.on('disconnect', () => {
-      console.log('🔴 Client disconnesso:', socket.id)
+    //  Aggiunta alla chat room
+    socket.on('join_chat', (chatId) => {
+      socket.join(chatId)
+      console.log(`📥 Utente ${socket.id} è entrato nella stanza ${chatId}`)
+
     })
 
-    //il serer riceve i dati dal client tramite evento chat:message
-    socket.on('chat:message', async (data) => {
-      console.log('📨 Messaggio:', data)
+     // Disconnect
+        socket.on('disconnect', () => {
+          console.log('🔴 Client disconnesso:', socket.id)
+        })
 
+
+    socket.on('send_message', async (data) => {
       const {chatId, senderId, text} = data
 
       try {
-        //creo il messaggio
         const newMessage = new messageModel({
             chat: chatId,
             sender: senderId,
             text: text
         })
-        //salvo il messaggio
-        const saveMessage = await newMessage.save()
 
-        //collego l'id del messaggio nella chat 
+        const saveMessage = await newMessage.save()
         await chatModel.findByIdAndUpdate(chatId, {
              $push: { messages: saveMessage._id }
         })
 
-        await saveMessage.populate('sender', 'name surname avatar')
+        const populatedMessage = await saveMessage.populate('sender', 'name surname avatar')
 
-        //emetto il messaggio in tempo reale 
-        io.to(chatId).emit('chat:message', saveMessage)
+        io.to(chatId).emit('send_message', populatedMessage)
 
 
       } catch (error) {

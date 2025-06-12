@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Alert, Button, ListGroup } from 'react-bootstrap'
+import { Alert, Button, Card} from 'react-bootstrap'
 import './styleList.css'
+import api from '../../../service/api.js'
+export default function ListPingComponent({list, isJoined, fetchUser}) {
 
-export default function ListPingComponent({list, isJoined}) {
 
-    const [listPings, setListPings] = useState([])
     const [showAlert, setShowAlert ] = useState(false)
     const [msg, setMsg] = useState('')
 
@@ -13,36 +13,74 @@ export default function ListPingComponent({list, isJoined}) {
         setMsg("No pings available")
         setShowAlert(true)
       }else{
-        setListPings(list)
+        setShowAlert(false) 
       }
     },[list])
 
+    const leavePing = async(id)=>{
+      try {
+        const res = await api.put(`ping/leave/${id}` )
+
+
+        fetchUser()
+        console.log(res)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    const deletePing = async ()=>{
+      console.log("eliminato")
+    }
+
+
   return (
-    <ListGroup>
+    <>
       {!showAlert && (
-        listPings.map((el, i) =>(
-          <ListGroup.Item key={i} className='listItem my-2'>
-            <div className='d-flex align-items-center gap-3'>
+        list.map((el, i) =>(
+            <Card key={i} border={isJoined ? "danger" : "primary"}  className='mb-3 '>
+            <Card.Header>
               <i className={el.icon}></i>
-              <p>{el.category}</p>
-            </div>
-            <div className='d-flex justify-content-between'>
-              <p>{el.description}</p>
-              <span className='date'>{new Date(el.date).toLocaleDateString()}</span>
-              <p>{el.city}</p>
-            </div>
-            {isJoined && (
-              <Button>Leave</Button>
+            </Card.Header>
+
+            <Card.Body>
+
+              <Card.Title>
+                  {el.category}
+              </Card.Title>
+
+              <Card.Text>
+                {el.description}
+              </Card.Text>
+                <div className='d-flex justify-content-between'>
+                  <span className='date'>{new Date(el.date).toLocaleDateString()}</span>
+                  <p>{el.city}</p>
+                </div>
+
+             {!isJoined && (
+              <Button onClick={deletePing} className='btn-danger btnList'>Delete</Button>
+             )}   
+
+             {isJoined && (
+              <Button 
+              className='btn-warning btnList'
+              onClick={(e)=> {
+                e.preventDefault()
+                leavePing(el._id)
+              }}
+                >Leave</Button>
             )}
-          </ListGroup.Item>
+            </Card.Body>
+          </Card>
+
         ))
       )}
 
       {showAlert && (
-        <Alert  variant='warning' className='text-center'>
+        <Alert  variant='none' className='alertList'>
           {msg}
         </Alert>
       )}
-    </ListGroup>
+    </>
   )
 }

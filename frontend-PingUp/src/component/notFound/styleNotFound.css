@@ -1,0 +1,52 @@
+.notFound{
+    color: rgba(255, 255, 255, 0.808);
+    display: flex;
+    justify-content: center;
+
+}
+
+.cardNotFound{
+    border-radius: 10px;
+    padding: 50px;
+    animation: rotate 0.9s forwards;
+    backface-visibility: hidden;
+}
+
+@keyframes rotate{
+    from{
+        transform: rotateX(0deg);
+    }
+    to{
+        transform: rotateX(360deg);
+    }
+}
+
+.cardNotFound::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 10px;
+  padding: 2px; /* spessore bordo */
+  background: linear-gradient(90deg, 
+    #f83838 0%, 
+    #e9780e 25%, 
+    #dfa935 50%, 
+    #d3e90e 75%, 
+    #f85e38 100%);
+  background-size: 200% 100%;
+  background-position: 200% 0;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  animation: borderMove 2s linear infinite; 
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes borderMove {
+  to {
+    background-position: 0 0;
+  }
+}
