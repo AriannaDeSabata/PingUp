@@ -3,10 +3,12 @@ import { Button, Form } from 'react-bootstrap'
 import categories from './categories'
 import Select from 'react-select'
 
-export default function SearchFormComponent({pings, setPings, setCity,setShowFormSearch, allPings}) {
+export default function SearchFormComponent({pings, setPings, setCity,setShowFormSearch, allPings, map}) {
 
     const [categorySelected, setCategorySelected] = useState(null)
     const [dateSearch, setDateSearch] = useState(null)
+    const [msg, setMsg] = useState("")
+    const [showMsg, setShowMsg] = useState(false)
 
     const options = categories.map(cat=>({value: cat, label: cat}))
 
@@ -21,8 +23,32 @@ export default function SearchFormComponent({pings, setPings, setCity,setShowFor
             return ping.category.includes(categorySelected) || ping.date.includes(dateSearch)
           })
 
-          setPings(filteredPings)
-          setShowFormSearch(false)
+          if(filteredPings.length === 0){
+             setMsg("There are no pings based on your search")
+             setShowMsg(true)
+              setTimeout(()=>{
+                setShowMsg(false)
+              },2000)
+
+          }else{
+            setPings(filteredPings)
+            setShowFormSearch(false)
+            setMsg("")
+          }
+
+          if (map && filteredPings.length > 0) {
+            console.log(filteredPings)
+            const lat = filteredPings[0].location.coordinates[0]
+            const lng = filteredPings[0].location.coordinates[1]
+
+          map.flyTo({
+            center: [lng ,lat ],
+            zoom: 7,  
+            speed: 1.2,
+            curve: 1,
+          })
+        }
+
         }
       }
 
@@ -55,8 +81,11 @@ export default function SearchFormComponent({pings, setPings, setCity,setShowFor
             <Form.Control type='date' onChange={(e)=>setDateSearch(e.target.value)} ></Form.Control>
         </Form.Group>
 
-        <Button className='mt-2' onClick={handleSubmit}>Search</Button>
-        <Button onClick={handleReset}>Reset</Button>
+        {showMsg &&(
+          <p className='errorMsg'>{msg}</p>
+        )}
+        <Button onClick={handleSubmit}>Search</Button>
+        <Button onClick={handleReset} className='btn-danger'>Reset</Button>
       </Form>
     </div>
   )

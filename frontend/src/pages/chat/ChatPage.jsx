@@ -39,7 +39,7 @@ export default function ChatPage() {
 
 
   return (
-    <Container fluid={"md"} className='mt-10 '>
+    <Container fluid={"md"}>
 
       <div className='contChats'>
         <div className='d-flex gap-3 align-items-center contHeader' >
@@ -54,7 +54,7 @@ export default function ChatPage() {
                   </div>
                 )}
 
-            <ListGroup>
+            <ListGroup className='p-2'>
               {allChats.map((chat, i ) => (
                 <ListGroup.Item 
                     key={i} 

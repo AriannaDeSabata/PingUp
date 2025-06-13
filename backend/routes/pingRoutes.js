@@ -5,6 +5,7 @@ import chatModel from '../models/ChatModel.js'
 import userModel from '../models/UserModel.js'
 import mongoose from 'mongoose'
 import messageModel from '../models/MessageModel.js'
+import { ObjectId } from 'bson'
 
 const route = express.Router()
 
@@ -99,7 +100,7 @@ route.delete('/:id', authMiddleware, async(req, res, next)=>{
 
         await userModel.findByIdAndUpdate(
         idUser,
-        { $pull: { pingsJoined: new mongoose.Types.ObjectId(id) } }
+        { $pull: { pingsJoined: ObjectId.createFromHexString(id) } }
         )
 
         const chat = await chatModel.findOne({ ping: id })
@@ -182,7 +183,7 @@ route.put('/leave/:id', authMiddleware, async(req, res, next)=>{
 
         await userModel.findByIdAndUpdate(
         idUser,
-        { $pull: { pingsJoined: new mongoose.Types.ObjectId(idPing) } }
+        { $pull: { pingsJoined:  ObjectId.createFromHexString(idPing) } }
         )
 
         const chat = await chatModel.findOne({ ping: idPing });

@@ -1,8 +1,6 @@
-@media (min-width: 430px){
-  .contChat{
-    width: 60vh;
-    margin: auto;
-  }
+.contChat{
+  margin: auto;
+  margin-top: 10vh;
 }
 
 .chatMessages{
@@ -71,6 +69,7 @@
     color: #ffff;
     font-weight: bold;
     cursor: pointer;
+    float: right;
 }
 
 .avatarChatMsg{
@@ -97,4 +96,11 @@
 }
 .infoChat p{
   margin: 0;
+}
+
+@media (min-width: 430px){
+  .contChat{
+    width: 60vh;
+
+  }
 }

@@ -6,6 +6,7 @@ import authMiddleware from '../middlewares/authMiddleware.js'
 import pingModel from '../models/PingModel.js'
 import chatModel from '../models/ChatModel.js'
 import messageModel from '../models/MessageModel.js'
+import { ObjectId } from 'bson'
 
 const route = express.Router()
 
@@ -129,13 +130,45 @@ route.put('/me', authMiddleware, async(req ,res ,next)=>{
 route.delete('/me', authMiddleware, async(req ,res ,next)=>{
     try {
         
-        const id = req.user.id
+        const id = ObjectId.createFromHexString(req.user.id)
         const user = await userModel.findById(id)
 
-        if(user._id.toString() !== id){
+        console.log(id)
+        if(!user || user._id.toString() !== req.user.id){
             return res.status(404).json({message: "Unauthorized"})
         }
         
+        //recupero tutti i ping 
+        const pings = await pingModel.find({creatorId: id})
+
+        //ottengo gli id di tutti i ping
+        const pingIds = pings.map(ping => ping._id)
+
+        //recupero le chat
+        const chats = await  chatModel.find({ping :{$in: pingIds}})
+        const chatIds = chats.map(chat => chat._id)
+
+        //elimino i messaggi legate alle chat
+        await messageModel.deleteMany({ chat: { $in: chatIds } })
+
+        //elimino le chat 
+        await chatModel.deleteMany({_id: { $in: chatIds }})
+
+        //elimino i ping
+        await pingModel.deleteMany({_id : {$in: pingIds}})
+
+        //rimuovo l'utente dai ping a cui partecipa
+        await pingModel.updateMany(
+            {participants: id},
+            {$pull: { participants: id }}
+        )
+
+        //rimuovo l'utente dalle chat a dei ping a cui partecipa 
+        await chatModel.updateMany(
+            {participants: id},
+            {$pull: { participants: id }}
+        )
+
 
         await userModel.findByIdAndDelete(id)
 

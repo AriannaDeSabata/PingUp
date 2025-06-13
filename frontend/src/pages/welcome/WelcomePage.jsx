@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import './styleWelcomePage.css'
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
-export default function WelcomePage() {
+export default function WelcomePage({user}) {
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
@@ -33,8 +33,8 @@ export default function WelcomePage() {
 
       <Container className='text-center px-5 contentOverlay' fluid="md">
         <div className='welcomeArrow'>
-          <i className="fa-solid fa-arrow-down"></i>
-          <p className='swipeTxt'>SWIPE DOWN</p>
+          <i className="fa-solid fa-arrow-up"></i>
+          <p className='swipeTxt'>SWIPE</p>
         </div>
 
         <Row>
@@ -49,19 +49,22 @@ export default function WelcomePage() {
               </p>
 
           </Col>
-          <Col md={12} className={scrolled ? 'visible contW' : 'hidden contW '}>
+          {!user &&(
+            <Col md={12} className={scrolled ? 'visible contW' : 'hidden contW '}>
 
-          <p className='mb-4' >Join the community or sign up to create your first event.</p>
-          <div>
-              <Button className="btn-dark btnLogW  me-3">
-                  <Link to="/login" className="link">Login</Link>
-                </Button>
-                <Button className="btn-dark btnRegW ">
-                  <Link to="/register" className="link">Register</Link>
-                </Button>
-            </div>
+            <p className='mb-4' >Join the community or sign up to create your first event.</p>
+            <div>
+                <Button className="btn-dark btnLogW  me-3">
+                    <Link to="/login" className="link">Login</Link>
+                  </Button>
+                  <Button className="btn-dark btnRegW ">
+                    <Link to="/register" className="link">Register</Link>
+                  </Button>
+              </div>
 
-          </Col>
+            </Col>
+          )}
+
         </Row>
       </Container>
     </>

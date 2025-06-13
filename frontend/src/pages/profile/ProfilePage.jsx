@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import {  Col, Container, Row, Spinner } from 'react-bootstrap'
+import {  Button, Card, Col, Container, Row, Spinner } from 'react-bootstrap'
 import './styleProfile.css'
-import {  useParams } from 'react-router-dom'
+import {  useNavigate, useParams } from 'react-router-dom'
 import api from '../../../service/api'
 import ListPingComponent from '../../component/pingList/ListPingComponent'
 import EditFormComponent from '../../component/editForm/EditFormComponent'
@@ -16,6 +16,11 @@ export default function ProfilePage({setUser}) {
   const [loading, setLoading] = useState(true)
   const [showFormEdit, setShowFormEdit] = useState(false)
   const [showBtnEdit, setShowBtnEdit] = useState(false)
+
+  const [showFormDelete, setShowFormDelete] = useState(false)
+  const [errorDelete, setErrorDelete] = useState(false)
+  const [msgErr, setMsgErr] = useState("")
+  const navigate = useNavigate()
 
   const {id} = useParams()
 
@@ -63,8 +68,29 @@ export default function ProfilePage({setUser}) {
     setShowFormEdit(true)
   }
 
+  const deleteProfile = async ()=>{
+    try {
+        await api.delete('/auth/me')
+        localStorage.removeItem("token")
+        localStorage.removeItem('user')
+        setUser(null)
+        navigate('/')
+
+    } catch (error) {
+      setErrorDelete(true)
+      setMsgErr(error.message)
+    }
+  }
+
+
+  const handleDeleteProfile = (e)=>{
+    e.preventDefault()
+    deleteProfile()
+  }
+
+
   return (
-    <Container className='ms-md-0 contProfile'>
+    <Container className='mx-0 contProfile' fluid={"fluid"}>
       <Row >
         <Col className='colProfile p-4 mb-3 mb-md-0 ' xs={12} md={4}>
         <div className='colProfileImg'> 
@@ -75,40 +101,41 @@ export default function ProfilePage({setUser}) {
 
             </div>
             <div className='mt-3'>
-              <h3>{profileData.name} {profileData.surname}</h3>
+              <h3>{profileData.name} <br></br>{profileData.surname}</h3>
 
               <div className='contInfo'>
                 <i className="fa-solid fa-envelope"></i>
                 <p>{profileData.email}</p>
               </div>
-
-
               <div className='contInfo'>
                 <i className="fa-solid fa-location-dot"></i>
                 <p>{profileData.city}</p>
               </div>
-
+          
             </div>
+
             {showBtnEdit && (
-              <button 
-              className='btnEdit btnRotate'
-              onClick={handleEdit}
-              >
-                <i className="fa-solid fa-pencil"></i>
-              </button>
+              <div className='contEditProfile'>
+                  <Button className='btnDeleteProfile btn-danger' onClick={()=>setShowFormDelete(true)}>
+                    Delete Profile
+                  </Button>
+                  <button 
+                  className='btnEdit btnRotate'
+                  onClick={handleEdit}
+                  >
+                    <i className="fa-solid fa-pencil"></i>
+                  </button>
 
-            )
-
-            }
-
+              </div>
+            )}
         </Col>
 
-        <Col xs={12} md={4} className='contPingsCreated mb-3 mb-md-0 ps-md-4 px-4 pe-md-0 mt-md-3'>
+        <Col xs={12} md={4} className='contPingsCreated mb-3 mb-md-0 px-3  mt-md-3'>
             <h6 >Pings Created</h6>
-            <ListPingComponent list={listPingsCreated}  fetchUser={fetchUser}/>
+            <ListPingComponent list={listPingsCreated}  fetchUser={fetchUser}  id={id}/>
         </Col>
 
-        <Col xs={12} md={4} className='contPingsJoin mb-3 mb-md-0 px-4 pe-md-0 mt-md-3 '>
+        <Col xs={12} md={4} className='contPingsJoin mb-3 mb-md-0 px-3  mt-md-3 '>
           <h6>Pings Joined</h6>
           <ListPingComponent list={listPingsJoined} isJoined={isJoined} fetchUser={fetchUser}/>
         </Col>
@@ -117,6 +144,20 @@ export default function ProfilePage({setUser}) {
       {showFormEdit &&(
         <EditFormComponent profileData={profileData} setShowFormEdit={setShowFormEdit} fetchUser={fetchUser}/>
       )}
+
+      {showFormDelete && (
+        <div className='form'>
+          <Card className='cardDelete'>
+            <Card.Header className='text-center'>Are you sure you want to delete your profile?</Card.Header>
+            <Card.Body className='d-flex justify-content-center gap-3'>
+              <Button className='btn-danger' onClick={handleDeleteProfile}>Delete</Button>
+              <Button className='btn-success' onClick={()=>setShowFormDelete(false)}>Back</Button>
+            </Card.Body>
+          </Card>
+        </div>
+      )}
+
+
     </Container>
   )
 }

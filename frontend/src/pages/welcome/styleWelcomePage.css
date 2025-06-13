@@ -76,7 +76,7 @@
   top: 0vh;
   right: 50px;
   z-index: 20;
-  animation: swipeDown 4s ease-in infinite;
+  animation: swipe 4s ease-in infinite;
   color: #ffffff96;
 }
 
@@ -85,19 +85,19 @@
   font-size: 50px;
 }
 
-@keyframes swipeDown{
+@keyframes swipe{
   0%{
-    transform: translateY(-30px);
+    transform: translateY(110vh);
   }
   100%{
-    transform: translateY(110vh);
+    transform: translateY(-50px);
   }
 }
 
 .swipeTxt{
   transform: rotateZ(90deg);
   margin-bottom: 0;
-  margin-top: 80px;
+  margin-top: 30px;
 }
 
 

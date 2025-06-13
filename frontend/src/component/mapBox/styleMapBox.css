@@ -10,10 +10,27 @@
     background-color: #aaaaaa;
 }
 
-/*css buttton*/
-.buttonMap {
+/*css tooltip*/
+.toolTip{
     position: absolute;
     right: 20px;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 20px;
+
+}
+.tooltipTxt{
+    font-size: 18px;
+    color: #2471A3;
+    font-weight: bolder;
+    animation: moveRightLeft 1.2s ease-in infinite;
+    pointer-events: none;
+    opacity: 0.7
+}
+
+/*css buttton*/
+.buttonMap {
     border-radius: 50%;
     border: none;
     background-color: rgb(12, 142, 175);
@@ -30,35 +47,7 @@
     top: 140px;
 }
 
-/*css form*/
-.form{
-    width: 350px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    position: absolute;
-    top:170px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 30px;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 
-}
-
-.closeForm{
-    font-size: 0.8em;
-    border: none;
-    background-color: transparent;
-    float: right;
-}
-.formGroup{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.formGroup label{
-    margin-bottom: 0;
-}
 
 /*css marker*/
 .list{
@@ -141,3 +130,15 @@
     color: black;
 }
 
+
+@keyframes moveRightLeft{
+    0%{
+        transform: translateX(0);
+    }
+    50%{
+        transform: translateX(10px);
+    }
+    100%{
+        transform: translateX(0);
+    }
+}

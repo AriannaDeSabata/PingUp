@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Alert, Button } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import api from '../../../service/api'
@@ -7,7 +7,25 @@ export default function PingDetailsComponent({setShowDetails, detailsPing}) {
   
   const [msg, setMsg]= useState("")
   const [showAlertMsg, setShowAlertMsg] = useState(false)
+  const [showBtnJoin, setShowBtnJoin] = useState(true)
   const idPing = detailsPing._id
+  const navigate = useNavigate()
+
+  // Al caricamento del componente, controlla se l'utente loggato è già presente nella lista dei partecipanti del ping.
+  // Se l'utente è presente, nascondi il pulsante "Join".
+  useEffect(()=>{
+    const user = JSON.parse(localStorage.getItem("user"))
+    console.log(user)
+    if(    
+      detailsPing &&
+      Array.isArray(detailsPing.participants) &&
+      user &&
+      detailsPing.participants.some(p => p.user._id === user._id))
+      {
+        setShowBtnJoin(false)
+    }
+  },[detailsPing])
+
 
   //funzione per unirsi a un ping 
     const joinPing = async()=>{
@@ -17,9 +35,11 @@ export default function PingDetailsComponent({setShowDetails, detailsPing}) {
         if(res.status === 200){
           setMsg(res.data.message)
           setShowAlertMsg(true)
+          setShowBtnJoin(false)
           setTimeout(()=>{
-            setShowAlertMsg(false)
-          },3000)
+            navigate(`/chat/${detailsPing.chat}`)
+          },2000)
+
         }
 
       } catch (error) {
@@ -67,7 +87,10 @@ export default function PingDetailsComponent({setShowDetails, detailsPing}) {
                 {showAlertMsg && (
                     <Alert variant={"light"}>{msg}</Alert>
                 )}
-                <Button className='btn-success' onClick={joinPing}>Join</Button>
+                {showBtnJoin && (
+                    <Button className='btn-success' onClick={joinPing}>Join</Button>
+                )}
+
 
             </div>
         </div>

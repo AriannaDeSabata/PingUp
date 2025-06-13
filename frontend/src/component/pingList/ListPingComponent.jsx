@@ -3,7 +3,7 @@ import { Alert, Button, Card} from 'react-bootstrap'
 import './styleList.css'
 import api from '../../../service/api.js'
 
-export default function ListPingComponent({list, isJoined, fetchUser}) {
+export default function ListPingComponent({list, isJoined, fetchUser, id}) {
 
     const [showAlert, setShowAlert ] = useState(false)
     const [msg, setMsg] = useState('')
@@ -31,8 +31,16 @@ export default function ListPingComponent({list, isJoined, fetchUser}) {
     }
 
     //eliminare un ping
-    const deletePing = async ()=>{
-      console.log("eliminato")
+    const deletePing = async (id)=>{
+      try {
+        const res = await api.delete('/ping/'+ id)
+        console.log(res.data.message)
+         await fetchUser()
+
+      } catch (error) {
+        console.error(error)
+
+      }
     }
 
 
@@ -40,7 +48,7 @@ export default function ListPingComponent({list, isJoined, fetchUser}) {
     <>
       {!showAlert && (
         list.map((el, i) =>(
-            <Card key={i} border={isJoined ? "danger" : "primary"}  className='mb-3 '>
+            <Card key={i} border={isJoined ? "danger" : "primary"}  className='my-3 cardList '>
             <Card.Header>
               <i className={el.icon}></i>
             </Card.Header>
@@ -54,13 +62,17 @@ export default function ListPingComponent({list, isJoined, fetchUser}) {
               <Card.Text>
                 {el.description}
               </Card.Text>
-                <div className='d-flex justify-content-between'>
+                <div className='d-flex justify-content-between gap-3'>
                   <span className='date'>{new Date(el.date).toLocaleDateString()}</span>
-                  <p>{el.city}</p>
+                  <div className='d-flex gap-2 align-items-center'>
+                    <i className="fa-solid fa-location-dot"></i>
+                    <p>{el.city}</p>
+                  </div>
+
                 </div>
 
-             {!isJoined && (
-              <Button onClick={deletePing} className='btn-danger btnList'>Delete</Button>
+             {!isJoined && id === undefined  && (
+              <Button onClick={()=>deletePing(el._id)} className='btn-danger btnList'>Delete Ping</Button>
              )}   
 
              {isJoined && (
@@ -72,6 +84,7 @@ export default function ListPingComponent({list, isJoined, fetchUser}) {
               }}
                 >Leave</Button>
             )}
+
             </Card.Body>
           </Card>
 
@@ -79,7 +92,7 @@ export default function ListPingComponent({list, isJoined, fetchUser}) {
       )}
 
       {showAlert && (
-        <Alert  variant='none' className='alertList'>
+        <Alert  variant='none' className='alertList my-3'>
           {msg}
         </Alert>
       )}

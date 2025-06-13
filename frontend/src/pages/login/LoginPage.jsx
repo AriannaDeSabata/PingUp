@@ -6,7 +6,7 @@ import api from '../../../service/api.js'
 export default function LoginPage() {
 
   const [msg, setMsg] = useState('')
-  const [showAlertMsg, setShowAlertMsg] = useState(false)
+  const [showAlertMsg, setShowAlertMsg] = useState()
 
   const [loginUser, setLoginUser] = useState({
     email: '',
@@ -43,7 +43,10 @@ export default function LoginPage() {
     } catch (error) {
       console.error('Login Failed'+ error)
       setMsg(error.response.data.message)
-      setShowAlertMsg(true)
+      setTimeout(()=>{
+          setShowAlertMsg(true)
+      }, 2000)
+
 
 
     }
@@ -63,7 +66,7 @@ export default function LoginPage() {
 
 
         {showAlertMsg && (
-          <p className='styleAlert'>{msg}</p>
+          <p className='errorMsg'>{msg}</p>
         )}
 
         <Button onClick={handleSubmit}>Login</Button>

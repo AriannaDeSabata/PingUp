@@ -61,7 +61,7 @@ export default function ChatComponent({user}) {
 
   return (
 
-        <Container className='mt-10'>
+        <Container >
         <div className='contChat'> 
             <div className='d-flex mb-2'>
                 <div className='infoChat'>

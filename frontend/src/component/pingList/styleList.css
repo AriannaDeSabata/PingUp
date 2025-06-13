@@ -1,9 +1,9 @@
-.card{
+.cardList{
     background-color: rgba(0, 0, 0, 0.103);
     color: #c2c2c2;
 
 }
-.card-header{
+.cardList .card-header{
     background-color: #c2c2c215;
 }
 
@@ -15,4 +15,13 @@
 
 .card, .alertList, .btnList{
     font-size: 12px;
+}
+.card-body{
+    display: flex;
+    flex-direction: column;
+    gap: 10px
+}
+
+.cardList p{
+    margin: 0;
 }

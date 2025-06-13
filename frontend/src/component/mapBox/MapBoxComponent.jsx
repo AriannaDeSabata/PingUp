@@ -31,9 +31,18 @@ export default function MapBoxComponent({city}) {
 
     const [errMsg, setErrMsg] = useState("")
     const [showErr, setShowErr] = useState(false)
+    
+    const [showTooltip, setShowTooltip] = useState(true)
 
 
     mapboxgl.accessToken= accessToken
+
+    useEffect(()=>{
+      setTimeout(()=>{
+        setShowTooltip(false)
+      },5000)
+    },[])
+
 
     //recupero di tutti i ping
     const getAllPing = async()=>{
@@ -175,8 +184,9 @@ export default function MapBoxComponent({city}) {
               />
 
           <div ref={mapContainerRef} className='mapContainer'></div>
-
-            <button className='addPing buttonMap'onClick={()=>{
+          
+          <div className='toolTip addPing'>
+            <button className=' buttonMap'onClick={()=>{
               setShowFormPing(true)
               setShowFormSearch(false)
               setShowDetails(false)
@@ -184,17 +194,29 @@ export default function MapBoxComponent({city}) {
                 <i className="fa-solid fa-plus"></i>
               </button>
 
+              {showTooltip && (
+                <span className='tooltipTxt'>Add new Ping <i className="fa-solid fa-arrow-right"></i></span>
+              )}
+          </div>
+
+
             {showFormPing &&(
               <AddPingFormComponents setShowFormPing={setShowFormPing} setPings={setPings} pings={pings}/>
             )}
 
-            <button className='searchBtn buttonMap' onClick={()=>{
+          <div className='toolTip searchBtn '>
+            <button className='buttonMap' onClick={()=>{
               setShowFormSearch(true)
               setShowFormPing(false)
               setShowDetails(false)
               }}>
               <i className="fa-solid fa-magnifying-glass"></i>
             </button>
+
+              {showTooltip && (
+                <span className='tooltipTxt'>Search Ping <i className="fa-solid fa-arrow-right"></i></span>
+              )}
+          </div>
 
             {showFormSearch && (
               <SearchFormComponent pings={pings} setPings={setPings} setShowFormSearch={setShowFormSearch}  allPings={allPings} map={mapRef.current}/>

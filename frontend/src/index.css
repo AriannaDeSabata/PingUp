@@ -4,14 +4,10 @@
   font-family: "Montserrat", sans-serif;
 }
 
-.styleAlert{
-    color: red;
-}
 
 body{
     background-color: #1b1b1b !important;
 }
-
 .link{
     text-decoration: none;
     color: #ffff;
@@ -97,7 +93,40 @@ body{
 
 .errorMsg{
     color: red;
+    text-align: center;
+    font-size: 12px;
+    margin: 0;
 }
 
 
 
+/*css form*/
+.form{
+    min-width: 280px;
+    max-width: 350px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    position: absolute;
+    top:200px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 30px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+}
+
+.closeForm{
+    font-size: 0.8em;
+    border: none;
+    background-color: transparent;
+    float: right;
+}
+.formGroup{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.formGroup label{
+    margin-bottom: 0;
+}

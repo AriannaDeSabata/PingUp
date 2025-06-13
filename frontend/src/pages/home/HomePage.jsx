@@ -51,7 +51,7 @@ export default function HomePage({user,setUser}) {
     <Container className='px-0 mt-6' fluid={"fluid"}>
 
     {isLoading && (
-      <div className='msgLoading'>
+      <div className='msgLoading mx-5 text-center'>
         <h3 >Preparing the map for your city..."</h3>
         <div className='gap-5 d-flex mt-3'> 
             <Spinner animation="grow" size="sm" />
