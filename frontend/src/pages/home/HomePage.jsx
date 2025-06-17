@@ -52,7 +52,7 @@ export default function HomePage({user,setUser}) {
 
     {isLoading && (
       <div className='msgLoading mx-5 text-center'>
-        <h3 >Preparing the map for your city..."</h3>
+        <h3 >Preparing the map..."</h3>
         <div className='gap-5 d-flex mt-3'> 
             <Spinner animation="grow" size="sm" />
             <Spinner animation="grow" size="sm" />
