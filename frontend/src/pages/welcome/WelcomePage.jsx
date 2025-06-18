@@ -58,7 +58,7 @@ export default function WelcomePage({user}) {
                     <Link to="/login" className="link">Login</Link>
                   </Button>
                   <Button className="btn-dark btnRegW ">
-                    <Link to="/register" className="link">Register</Link>
+                    <Link to="/register" className="link">Sign up</Link>
                   </Button>
               </div>
 

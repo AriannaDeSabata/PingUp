@@ -53,7 +53,7 @@ export default function NavBar({user, setUser}) {
 
                 {!user && (
                   <>
-                  <Link to="/register" className='linkNav' >Register</Link>
+                  <Link to="/register" className='linkNav' >Sign up</Link>
                   <Link to="/login" className='linkNav'>Login</Link>
                   </>
                 )}
