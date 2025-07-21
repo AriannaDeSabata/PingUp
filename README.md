@@ -1,12 +1,12 @@
-#PingUp
+# PingUp
 PingUp è un'applicazione web che consente agli utenti di organizzare, visualizzare e partecipare ad attività sportive geolocalizzate, chiamate "ping".
 
-##Descrizione:
+## Descrizione:
 
 L'app mostra gli eventi sportivi su una mappa interattiva 🗺️ centrata sulla posizione dell'utente 📍, con filtri per sport e data 📅.
 Partecipando a un evento, l'utente viene automaticamente aggiunto a una chat privata 💬 dove può comunicare con gli altri partecipanti.
 
-##Funzionalità principali :
+## Funzionalità principali :
 
 📍 Visualizzazione degli eventi sportivi su una mappa interattiva
 🏷️ Filtri per sport e data per trovare facilmente gli eventi desiderati
@@ -22,7 +22,7 @@ Partecipando a un evento, l'utente viene automaticamente aggiunto a una chat pri
 
 
 
-##Tecnologie utilizzate:
+## Tecnologie utilizzate:
 
 🖥️ Frontend:
 React 
