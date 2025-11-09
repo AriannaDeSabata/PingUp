@@ -19,7 +19,7 @@ export default function NavBar({user, setUser}) {
 
   return (
     <Navbar expand="md" bg="dark" data-bs-theme="dark" fixed='top'>
-    <Container className='mx-md-3' fluid={"fluid"}>
+    <Container className='mx-md-5' fluid={"fluid"}>
 
       <div className='d-flex align-items-center gap-3'>
         {user &&(

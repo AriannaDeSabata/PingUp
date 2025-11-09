@@ -48,7 +48,7 @@ export default function ListPingComponent({list, isJoined, fetchUser, id}) {
     <>
       {!showAlert && (
         list.map((el, i) =>(
-            <Card key={i} border={isJoined ? "danger" : "primary"}  className='my-3 cardList '>
+            <Card key={i}  className='my-3 cardList '>
             <Card.Header>
               <i className={el.icon}></i>
             </Card.Header>

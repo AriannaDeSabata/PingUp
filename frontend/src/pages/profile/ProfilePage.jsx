@@ -90,7 +90,7 @@ export default function ProfilePage({setUser}) {
 
 
   return (
-    <Container className='mx-0 contProfile' fluid={"fluid"}>
+    <Container className=' pe-md-5 contProfile' fluid={"fluid"}>
       <Row >
         <Col className='colProfile p-4 mb-3 mb-md-0 ' xs={12} md={4}>
         <div className='colProfileImg'> 
@@ -130,12 +130,12 @@ export default function ProfilePage({setUser}) {
             )}
         </Col>
 
-        <Col xs={12} md={4} className='contPingsCreated mb-3 mb-md-0 px-3  mt-md-3'>
+        <Col xs={12} md={4} className='contPingsCreated mb-3 mb-md-0 px-3 px-md-5  mt-md-3'>
             <h6 >Pings Created</h6>
             <ListPingComponent list={listPingsCreated}  fetchUser={fetchUser}  id={id}/>
         </Col>
 
-        <Col xs={12} md={4} className='contPingsJoin mb-3 mb-md-0 px-3  mt-md-3 '>
+        <Col xs={12} md={4} className='contPingsJoin mb-3 mb-md-0 px-3 px-md-5 mt-md-3 '>
           <h6>Pings Joined</h6>
           <ListPingComponent list={listPingsJoined} isJoined={isJoined} fetchUser={fetchUser}/>
         </Col>
